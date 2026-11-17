@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Gauge, Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 import { SITE, SERVICES, waLink, mailLink } from "@/lib/site";
 import { SPECIALIST } from "@/lib/specialists";
 import EnquiryForm from "@/components/forms/EnquiryForm";
@@ -8,12 +9,16 @@ import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { Avatar } from "@/components/ui/Character";
 import { Reveal, SplitHeading } from "@/components/ui/Reveal";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
+import Faq from "@/components/home/Faq";
+import { FAQ } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: `Talk to the SME Market team. WhatsApp or call ${SITE.phone}, or email ${SITE.email}.`,
   alternates: { canonical: "/contact" },
 };
+
+const EMIRATES = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"];
 
 const NEXT = [
   { t: "You send a message", d: "Here, on WhatsApp, by phone or email. Whatever's easiest for you." },
@@ -118,8 +123,31 @@ export default function ContactPage() {
                   <EnquiryForm type="contact" meta={{ source: "contact" }} />
                 </div>
               </div>
+              <Link href="/assessment" className="group mt-4 flex items-center gap-4 rounded-[28px] bg-lime p-5 text-ink transition hover:brightness-95 md:p-6">
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-ink text-lime">
+                  <Gauge className="size-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[17px] font-semibold">Not ready to talk yet?</span>
+                  <span className="block text-[15px] text-ink/70">Get your free growth score in 2 minutes instead.</span>
+                </span>
+                <ArrowUpRight className="size-5 shrink-0 transition-transform duration-300 group-hover:rotate-45" />
+              </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* coverage */}
+      <section className="overflow-hidden bg-ink py-10 text-paper md:py-14">
+        <p className="container-x mb-5 text-[15px] font-semibold text-lime">Serving all seven emirates</p>
+        <div className="flex w-max animate-[marquee_36s_linear_infinite] gap-4">
+          {[...EMIRATES, ...EMIRATES, ...EMIRATES].map((e, i) => (
+            <span key={i} className="shrink-0 whitespace-nowrap text-[clamp(2.2rem,5vw,4.4rem)] font-semibold tracking-tight">
+              {e}
+              <span className="mx-6 text-paper/20">/</span>
+            </span>
+          ))}
         </div>
       </section>
 
@@ -139,6 +167,8 @@ export default function ContactPage() {
           </Reveal>
         </div>
       </section>
+
+      <Faq items={FAQ} title="Before you message us." greeting="Hi! Most people ask one of these first. Tap any question." />
     </>
   );
 }

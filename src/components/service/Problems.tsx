@@ -3,6 +3,10 @@ import { useRef } from "react";
 import type { Service } from "@/lib/site";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { Reveal, SplitHeading } from "@/components/ui/Reveal";
+import Character, { type Cast } from "@/components/ui/Character";
+import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
+
+const OWNER: Cast[] = ["karim", "maya", "ben"];
 
 /** Dark band that opens from a rounded inset as it arrives: the problems this service fixes, set large. */
 export default function Problems({ s }: { s: Service }) {
@@ -25,6 +29,10 @@ export default function Problems({ s }: { s: Service }) {
         <div className="lg:sticky lg:top-32 lg:self-start">
           <p className="text-[15px] font-medium text-lime">Sound familiar?</p>
           <SplitHeading className="display mt-4 text-section">The problems we fix first.</SplitHeading>
+          <p className="mt-5 max-w-sm text-[18px] text-paper/65">If any of these sound like your week, you&apos;re in the right place.</p>
+          <div className={`mt-10 hidden w-fit overflow-hidden rounded-[28px] text-ink lg:block ${VISUAL_TONE[s.slug]}`}>
+            <Character who={OWNER[Number(s.num) % OWNER.length]} mood="stressed" body="Device" size={240} className="translate-y-3" />
+          </div>
         </div>
         <Reveal className="divide-y divide-rule-dark border-y border-rule-dark" stagger={0.12}>
           {s.pain.map((p, i) => (

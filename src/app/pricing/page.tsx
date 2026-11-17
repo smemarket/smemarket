@@ -6,6 +6,8 @@ import { Fold, Slant } from "@/components/ui/Transitions";
 import PricingHero from "@/components/pricing/PricingHero";
 import ServiceIndex from "@/components/pricing/ServiceIndex";
 import Billing from "@/components/pricing/Billing";
+import Scenarios from "@/components/pricing/Scenarios";
+import Hires from "@/components/pricing/Hires";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -18,6 +20,8 @@ export default function PricingPage() {
     <>
       <PricingHero />
       <BundleBuilder />
+      <Scenarios />
+      <Hires />
       <div className="bg-paper-2">
         <Slant>
           <ServiceIndex />

@@ -216,6 +216,8 @@ function Intro({ onStart }: { onStart: () => void }) {
     { a: "Outreach", pos: "right-[10%] bottom-[34%]", d: "2s" },
   ];
   return (
+    <>
+
     <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
       <div className="animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_both]">
         <p className="label">Free growth score</p>
@@ -250,6 +252,99 @@ function Intro({ onStart }: { onStart: () => void }) {
         ))}
         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
           <Character who="zara" mood="excited" body="Device" size={360} className="h-[300px] w-[300px] sm:h-[360px] sm:w-[360px]" />
+        </div>
+      </div>
+    </div>
+  
+      <IntroMore onStart={onStart} />
+    </>
+  );
+}
+
+const GET = [
+  { t: "A score out of 100", d: "One number for how well your business turns attention into customers.", tone: "bg-ink text-paper" },
+  { t: "Six areas, scored", d: "Search, ads, outreach, social, enquiries and website, each with its own score.", tone: "bg-[#f6e3b5]" },
+  { t: "What to fix first", d: "Your biggest leaks, in order, and which service fixes each one.", tone: "bg-[#dbe6ef]" },
+];
+const ASK = [
+  { q: "Is it really free?", a: "Yes. The score, the breakdown and the recommendations are free. There's no obligation to sign up." },
+  { q: "Do I have to give my details?", a: "Not to see your score. You only share your details if you want our team to send a full written plan." },
+  { q: "How accurate is it?", a: "It's a quick self-assessment, so it's as good as your answers. For a deeper look, our team reviews your actual site and Google profile." },
+  { q: "What happens after?", a: "You can add the recommended services to your plan, talk to us on WhatsApp, or just keep the score. Up to you." },
+];
+
+/** Below the intro: what you get, and the questions people ask before starting. */
+function IntroMore({ onStart }: { onStart: () => void }) {
+  return (
+    <div className="mt-[clamp(5rem,12vh,8rem)]">
+      <p className="label">What you&apos;ll get</p>
+      <h2 className="display mt-4 max-w-3xl text-section">Three things, in about two minutes.</h2>
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {GET.map((g, i) => (
+          <div key={g.t} className={clsx("flex min-h-[260px] flex-col justify-between rounded-[28px] p-7 md:p-8", g.tone, i > 0 && "text-ink")}>
+            {i === 0 ? (
+              <svg viewBox="0 0 120 120" className="size-24 -rotate-90">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(242,238,230,.12)" strokeWidth="10" />
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#d4ff3f" strokeWidth="10" strokeLinecap="round" strokeDasharray={314} strokeDashoffset={110} />
+              </svg>
+            ) : i === 1 ? (
+              <div className="space-y-2">
+                {[78, 44, 62, 30].map((w, k) => (
+                  <div key={k} className="h-2.5 overflow-hidden rounded-full bg-ink/10">
+                    <div className="h-full rounded-full bg-ink" style={{ width: `${w}%` }} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {["#1", "#2", "#3"].map((n) => (
+                  <div key={n} className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-[14px] font-semibold">
+                    <span className="text-ink/45">{n}</span>
+                    <span className="h-2 flex-1 rounded-full bg-ink/10" />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mt-8">
+              <h3 className="text-[22px] font-semibold">{g.t}</h3>
+              <p className={clsx("mt-2 text-[16px] leading-relaxed", i === 0 ? "text-paper/65" : "text-ink-2")}>{g.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-[clamp(5rem,12vh,8rem)] grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <p className="label">Before you start</p>
+          <h2 className="display mt-4 text-section">Fair questions.</h2>
+          <button onClick={onStart} className="group mt-8 flex h-14 items-center gap-3 rounded-full bg-ink pl-6 pr-2 text-[16px] font-semibold text-paper transition hover:bg-ink-3">
+            Start my growth score
+            <span className="grid size-10 place-items-center rounded-full bg-lime text-ink transition-transform duration-300 group-hover:rotate-45">
+              <ArrowUpRight className="size-5" />
+            </span>
+          </button>
+        </div>
+        <div className="border-t border-rule-strong">
+          {ASK.map((x, i) => (
+            <Ask key={x.q} q={x.q} a={x.a} first={i === 0} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Ask({ q, a, first }: { q: string; a: string; first?: boolean }) {
+  const [open, setOpen] = useState(!!first);
+  return (
+    <div className="border-b border-rule-strong">
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex w-full items-center justify-between gap-4 py-5 text-left text-[19px] font-semibold">
+        {q}
+        <span className={clsx("grid size-9 shrink-0 place-items-center rounded-full border text-[20px] leading-none transition-all duration-500 ease-out-expo", open ? "rotate-45 border-ink bg-ink text-paper" : "border-rule-strong")}>+</span>
+      </button>
+      <div className={clsx("grid transition-[grid-template-rows] duration-500 ease-out-expo", open ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
+        <div className="overflow-hidden">
+          <p className={clsx("max-w-xl pb-5 text-[17px] leading-relaxed text-ink-2 transition-opacity duration-500", open ? "opacity-100" : "opacity-0")}>{a}</p>
         </div>
       </div>
     </div>

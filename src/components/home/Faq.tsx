@@ -9,14 +9,18 @@ import { waLink } from "@/lib/site";
 
 type Msg = { from: "you" | "us"; text: string; id: number };
 
-export default function Faq({ items, title = "Ask us anything." }: { items: { q: string; a: string }[]; title?: React.ReactNode; no?: string }) {
-  const [msgs, setMsgs] = useState<Msg[]>([
-    { from: "you", text: items[0].q, id: 0 },
-    { from: "us", text: items[0].a, id: 1 },
+export default function Faq({ items, title = "Ask us anything.", greeting = "Hi! Ask us anything. Tap a question, or message us on WhatsApp.", tone = "bg-paper" }: { items: { q: string; a: string }[]; title?: React.ReactNode; no?: string; greeting?: string; tone?: string }) {
+  // open mid-conversation so the chat never starts empty
+  const [msgs, setMsgs] = useState<Msg[]>(() => [
+    { from: "us", text: greeting, id: 100 },
+    ...items.slice(0, 2).flatMap((f, i): Msg[] => [
+      { from: "you", text: f.q, id: i * 2 },
+      { from: "us", text: f.a, id: i * 2 + 1 },
+    ]),
   ]);
-  const [asked, setAsked] = useState<number[]>([0]);
+  const [asked, setAsked] = useState<number[]>([0, 1]);
   const [typing, setTyping] = useState(false);
-  const idRef = useRef(2);
+  const idRef = useRef(200);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => () => {
@@ -42,7 +46,7 @@ export default function Faq({ items, title = "Ask us anything." }: { items: { q:
   };
 
   return (
-    <section className="bg-paper section-y">
+    <section className={clsx(tone, "section-y")}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <div className="container-x grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
         <div>

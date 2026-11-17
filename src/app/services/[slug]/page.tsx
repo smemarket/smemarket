@@ -17,6 +17,11 @@ import Problems from "@/components/service/Problems";
 import Deliverables from "@/components/service/Deliverables";
 import Rhythm from "@/components/service/Rhythm";
 import KpiBoard from "@/components/service/KpiBoard";
+import WhoFor from "@/components/service/WhoFor";
+import Ninety from "@/components/service/Ninety";
+import Compare from "@/components/service/Compare";
+import Pair from "@/components/service/Pair";
+import { SERVICE_EXTRA } from "@/lib/service-extra";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }));
@@ -76,12 +81,16 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <div className="pt-[clamp(3rem,8vh,6rem)]">
         <Problems s={s} />
       </div>
+      <WhoFor s={s} />
       <Deliverables s={s} />
       <Rhythm s={s} />
+      <Ninety s={s} />
+      <Compare s={s} />
       <KpiBoard s={s} />
+      <Pair s={s} />
 
       {/* enquire */}
-      <Sweep from="bg-paper" to="bg-paper-2">
+      <Sweep from="bg-paper-2" to="bg-paper">
         <section id="enquire" className="scroll-mt-20 section-y">
           <div className="container-x grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div className="flex flex-col">
@@ -107,12 +116,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </section>
       </Sweep>
 
-      <div className="bg-paper-2">
-        <Faq items={s.faq} title={`${s.name}: common questions.`} />
+      <div>
+        <Faq tone="bg-paper-2" items={[...s.faq, ...SERVICE_EXTRA[s.slug].faq]} title={`${s.name}: common questions.`} greeting={`Hi! Ask us anything about ${midSentence(s.name)}. Tap a question below.`} />
       </div>
 
       {/* other services */}
-      <section className="bg-paper-2 pb-[clamp(5rem,12vh,8rem)]">
+      <section className="bg-paper pt-[clamp(4rem,10vh,6rem)] pb-[clamp(5rem,12vh,8rem)]">
         <div className="container-x">
           <div className="flex items-end justify-between gap-6">
             <SplitHeading className="display text-[clamp(1.8rem,3.4vw,2.8rem)]">Works even better together.</SplitHeading>

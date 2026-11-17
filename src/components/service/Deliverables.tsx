@@ -19,9 +19,9 @@ export default function Deliverables({ s }: { s: Service }) {
       cards.forEach((card, i) => {
         const next = cards[i + 1];
         if (!next) return;
-        gsap.to(card.firstElementChild, {
+        gsap.fromTo(card.firstElementChild, { scale: 1, filter: "brightness(1)" }, {
           scale: 0.92,
-          filter: "brightness(0.82)",
+          filter: "brightness(0.85)",
           ease: "none",
           scrollTrigger: { trigger: next, start: "top 85%", end: "top 25%", scrub: true },
         });

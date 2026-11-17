@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRef } from "react";
-import { ArrowLeft, BarChart3, UserCheck } from "lucide-react";
+import { ArrowLeft, BarChart3, Check, Sparkles, UserCheck } from "lucide-react";
 import type { Service } from "@/lib/site";
 import { waLink } from "@/lib/site";
 import { SPECIALIST } from "@/lib/specialists";
@@ -27,7 +27,7 @@ export default function ServiceHero({ s }: { s: Service }) {
         .fromTo("[data-h-panel]", { clipPath: "inset(100% 0% 0% 0% round 32px)" }, { clipPath: "inset(0% 0% 0% 0% round 32px)", duration: 1.2, ease: "expo.inOut" }, 0)
         .from("[data-h-peep]", { yPercent: 40, duration: 1.3, ease: "expo.out" }, 0.55)
         .from("[data-h-card]", { y: 40, opacity: 0, scale: 0.94, duration: 1, ease: "expo.out" }, 0.7)
-        .from("[data-h-chip]", { y: 20, opacity: 0, duration: 0.8, ease: "back.out(1.6)" }, 0.95);
+        .from("[data-h-chip]", { y: 20, opacity: 0, duration: 0.8, ease: "back.out(1.6)", stagger: 0.12 }, 0.95);
       const cancel = onReveal(() => tl.play());
       // the card floats gently, the panel drifts as you scroll away
       gsap.to("[data-h-card]", { y: -10, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2 });
@@ -78,6 +78,19 @@ export default function ServiceHero({ s }: { s: Service }) {
           </div>
           <div data-h-peep className="absolute -bottom-3 -right-6 sm:right-0">
             <Character who={sp.who} mood={sp.mood} body={sp.body} size={330} className="h-[260px] w-[260px] sm:h-[330px] sm:w-[330px]" />
+          </div>
+          <div data-h-chip className="absolute bottom-[22%] left-5 hidden w-[230px] rounded-2xl bg-card p-4 shadow-[0_18px_40px_-22px_rgba(21,19,15,.55)] sm:block">
+            <p className="flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-ink/50">
+              <Sparkles className="size-3.5" /> AI agent
+            </p>
+            <p className="mt-1 text-[14px] font-medium leading-snug">{s.rhythm[1]?.agents ?? s.rhythm[0].agents}</p>
+            <p className="mt-2 flex items-center gap-1.5 text-[13px] font-semibold">
+              <Check className="size-3.5" strokeWidth={3} /> Approved by our team
+            </p>
+          </div>
+          <div data-h-chip className="absolute right-5 top-5 hidden rounded-2xl bg-ink px-4 py-3 text-paper shadow-[0_18px_40px_-22px_rgba(21,19,15,.6)] sm:block">
+            <p className="text-[12px] text-paper/55">We report</p>
+            <p className="text-[15px] font-semibold">{s.kpi}</p>
           </div>
           <p data-h-chip className="absolute bottom-5 left-5 rounded-full bg-card px-4 py-2 text-[14px] font-semibold shadow-[0_14px_30px_-18px_rgba(21,19,15,.5)]">
             Your {sp.role.toLowerCase()}
