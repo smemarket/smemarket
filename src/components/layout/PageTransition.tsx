@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
 import { setCovered } from "@/lib/reveal";
 import { getLenis } from "./SmoothScroll";
+import { stripBase } from "@/lib/image-loader";
 import clsx from "clsx";
 import { Check, Sparkles } from "lucide-react";
 import Character, { type Cast } from "@/components/ui/Character";
@@ -154,19 +155,19 @@ export default function PageTransition() {
         {
           y: 60,
           opacity: 0,
-          duration: 0.9,
+          duration: 0.7,
           ease: "expo.out",
-          stagger: 0.06,
+          stagger: 0.04,
           clearProps: "transform,opacity",
         },
         0.05,
       )
       .from("[data-intro-line]", { opacity: 0, duration: 0.8 }, 0.3);
-    WORDS.forEach((_, i) => tl.call(() => setWord(i), [], 0.35 + i * 0.36));
+    WORDS.forEach((_, i) => tl.call(() => setWord(i), [], 0.25 + i * 0.2));
     tl.to(
       "[data-intro-ui]",
-      { yPercent: -8, opacity: 0, duration: 0.6, ease: "power3.in" },
-      2.95,
+      { yPercent: -8, opacity: 0, duration: 0.45, ease: "power3.in" },
+      1.6,
     )
       .to(
         "[data-intro]",
@@ -174,12 +175,12 @@ export default function PageTransition() {
           yPercent: -100,
           borderBottomLeftRadius: "48px",
           borderBottomRightRadius: "48px",
-          duration: 1.1,
+          duration: 0.85,
           ease: EASE,
         },
-        3.15,
+        1.72,
       )
-      .add(() => setCovered(false), 3.4)
+      .add(() => setCovered(false), 1.85)
       .add(finish);
     return () => {
       cancelAnimationFrame(hold);
@@ -295,10 +296,11 @@ export default function PageTransition() {
     const go = async (url: URL) => {
       busy.current = true;
       window.dispatchEvent(new Event("smem:navigate"));
-      router.prefetch(url.pathname);
+      const path = stripBase(url.pathname);
+      router.prefetch(path);
       await cover();
       const landed = new Promise<void>((r) => (arrived.current = r));
-      router.push(url.pathname + url.search + url.hash, { scroll: false });
+      router.push(path + url.search + url.hash, { scroll: false });
       // never hang on the sheet: settle after 4s even if the route is slow
       await Promise.race([landed, new Promise((r) => setTimeout(r, 4000))]);
       glideTo(url.hash.slice(1), true);
@@ -391,7 +393,7 @@ export default function PageTransition() {
                     "inline-block",
                     word === WORDS.length - 1
                       ? "animate-[introWord_.5s_cubic-bezier(.16,1,.3,1)_both] text-lime"
-                      : "animate-[introWord_.28s_cubic-bezier(.16,1,.3,1)_both]",
+                      : "animate-[introWord_.2s_cubic-bezier(.16,1,.3,1)_both]",
                   )}
                 >
                   {WORDS[word]}
@@ -461,7 +463,7 @@ export default function PageTransition() {
                               done
                                 ? ""
                                 : active
-                                  ? "animate-[grow_.36s_linear_both]"
+                                  ? "animate-[grow_.2s_linear_both]"
                                   : "scale-x-0",
                             )}
                           />

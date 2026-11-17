@@ -30,7 +30,7 @@ export default function Header() {
   useEffect(() => {
     const on = () => {
       setScrolled(window.scrollY > 24);
-      setOverHero(window.location.pathname === "/" && window.scrollY < window.innerHeight * 0.75);
+      setOverHero(pathname === "/" && window.scrollY < window.innerHeight * 0.75);
     };
     on();
     window.addEventListener("scroll", on, { passive: true });

@@ -11,6 +11,7 @@ import { getLenis } from "@/components/layout/SmoothScroll";
 import { gsap } from "@/lib/gsap";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { imageUrl } from "@/lib/image-loader";
 
 const KEY = "smemarket.plan.v1";
 
@@ -69,7 +70,7 @@ function flyToCart(from: Element, img: string, onLand: () => void) {
     width: `${size}px`,
     height: `${size}px`,
     borderRadius: "999px",
-    backgroundImage: `url(${img})`,
+    backgroundImage: `url(${imageUrl(img, 128)})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     boxShadow: "0 0 0 3px #d4ff3f, 0 18px 40px -10px rgba(21,19,15,.6)",
