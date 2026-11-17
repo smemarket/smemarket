@@ -8,8 +8,9 @@ import { getLenis } from "./SmoothScroll";
 import { stripBase } from "@/lib/image-loader";
 import clsx from "clsx";
 import { Check, Sparkles } from "lucide-react";
-import Character, { type Cast } from "@/components/ui/Character";
+import Character from "@/components/ui/Character";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
 /*
  * One overlay, three jobs:
@@ -19,63 +20,6 @@ import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
  *  3. Links to a section on the page you're already on: a smooth scroll, no overlay.
  */
 
-/** Each line of the intro lights up the specialist whose AI agent does that job. The last line lights them all. */
-const CREW: {
-  who: Cast;
-  body: string;
-  mood: "happy" | "excited" | "calm" | "explaining";
-  tone: string;
-  line: string;
-  agent: string;
-  task: string;
-}[] = [
-  {
-    who: "leo",
-    body: "Coffee",
-    mood: "calm",
-    tone: VISUAL_TONE["enquiry-desk"],
-    line: "answers your enquiries.",
-    agent: "Enquiry agent",
-    task: "Replying on WhatsApp",
-  },
-  {
-    who: "mei",
-    body: "PointingUp",
-    mood: "excited",
-    tone: VISUAL_TONE["paid-ads"],
-    line: "runs your ads.",
-    agent: "Ads agent",
-    task: "Testing 4 new hooks",
-  },
-  {
-    who: "dina",
-    body: "Device",
-    mood: "excited",
-    tone: VISUAL_TONE["social-media-management"],
-    line: "writes your posts.",
-    agent: "Social agent",
-    task: "Drafting Friday's reel",
-  },
-  {
-    who: "yusuf",
-    body: "Device",
-    mood: "happy",
-    tone: VISUAL_TONE["seo-optimisation"],
-    line: "ranks you on Google.",
-    agent: "Search agent",
-    task: "Rewriting 3 pages",
-  },
-  {
-    who: "raj",
-    body: "Explaining",
-    mood: "explaining",
-    tone: VISUAL_TONE["sdr-outreach"],
-    line: "finds new clients.",
-    agent: "Outreach agent",
-    task: "Writing 40 intros",
-  },
-];
-const WORDS = [...CREW.map((c) => c.line), "grows your business."];
 const EASE = "expo.inOut";
 
 /** Smoothly scrolls to an element id (or the top), clearing the fixed header. */
@@ -93,7 +37,8 @@ export default function PageTransition() {
   const router = useRouter();
   // the intro only plays on a fresh load of the home page; decided on the server so there's no flash
   const [intro] = useState(() => pathname === "/");
-  const [word, setWord] = useState(0);
+  // 0: the AI agent is drafting · 1: our team has checked it
+  const [step, setStep] = useState(0);
 
   const root = useRef<HTMLDivElement>(null);
   const busy = useRef(false);
@@ -139,36 +84,46 @@ export default function PageTransition() {
       };
     }
 
+    // two beats, each held long enough to read
     const tl = gsap.timeline();
     tl.from(
       "[data-intro-logo]",
-      { opacity: 0, y: 12, duration: 0.8, ease: "power3.out" },
+      { opacity: 0, y: 12, duration: 0.7, ease: "power3.out" },
       0,
     )
       .from(
-        "[data-intro-more]",
-        { yPercent: 110, duration: 0.9, ease: "expo.out" },
+        "[data-intro-l1]",
+        { yPercent: 110, duration: 0.8, ease: "expo.out" },
         0.1,
       )
       .from(
-        "[data-intro-tile]",
-        {
-          y: 60,
-          opacity: 0,
-          duration: 0.7,
-          ease: "expo.out",
-          stagger: 0.04,
-          clearProps: "transform,opacity",
-        },
-        0.05,
+        "[data-intro-card]",
+        { y: 30, opacity: 0, duration: 0.8, ease: "expo.out" },
+        0.2,
       )
-      .from("[data-intro-line]", { opacity: 0, duration: 0.8 }, 0.3);
-    WORDS.forEach((_, i) => tl.call(() => setWord(i), [], 0.25 + i * 0.2));
-    tl.to(
-      "[data-intro-ui]",
-      { yPercent: -8, opacity: 0, duration: 0.45, ease: "power3.in" },
-      1.6,
-    )
+      .fromTo(
+        "[data-intro-bar]",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.8, ease: "power1.inOut" },
+        0.35,
+      )
+      .add(() => setStep(1), 1.15)
+      .from(
+        "[data-intro-l2]",
+        { yPercent: 110, duration: 0.8, ease: "expo.out" },
+        1.15,
+      )
+      .fromTo(
+        "[data-intro-peep]",
+        { yPercent: 100 },
+        { yPercent: 0, duration: 0.8, ease: "expo.out" },
+        1.1,
+      )
+      .to(
+        "[data-intro-ui]",
+        { yPercent: -6, opacity: 0, duration: 0.45, ease: "power3.in" },
+        2.15,
+      )
       .to(
         "[data-intro]",
         {
@@ -178,9 +133,9 @@ export default function PageTransition() {
           duration: 0.85,
           ease: EASE,
         },
-        1.72,
+        2.3,
       )
-      .add(() => setCovered(false), 1.85)
+      .add(() => setCovered(false), 2.45)
       .add(finish);
     return () => {
       cancelAnimationFrame(hold);
@@ -384,95 +339,69 @@ export default function PageTransition() {
             className="h-7 w-auto self-start md:h-8"
           />
           <div className="flex flex-col items-center">
-            <p className="display flex min-h-[2.2em] items-end justify-center overflow-hidden pb-[0.1em] text-center text-[clamp(2rem,4.6vw,4.4rem)] leading-[1.05] md:min-h-0">
-              <span data-intro-more className="block">
-                AI that{" "}
-                <span
-                  key={word}
-                  className={clsx(
-                    "inline-block",
-                    word === WORDS.length - 1
-                      ? "animate-[introWord_.5s_cubic-bezier(.16,1,.3,1)_both] text-lime"
-                      : "animate-[introWord_.2s_cubic-bezier(.16,1,.3,1)_both]",
-                  )}
-                >
-                  {WORDS[word]}
+            <h2 className="display text-center text-[clamp(2.2rem,5.4vw,5rem)] leading-[1.05]">
+              <span className="block overflow-hidden pb-[0.08em]">
+                <span data-intro-l1 className="block">
+                  AI does the work.
                 </span>
               </span>
-            </p>
+              <span className="block overflow-hidden pb-[0.08em]">
+                <span data-intro-l2 className="block text-lime">
+                  Our team checks it.
+                </span>
+              </span>
+            </h2>
 
-            {/* the crew: our team, each with an AI agent doing the work */}
-            <div className="mt-8 grid w-full max-w-[920px] grid-cols-5 gap-2 md:mt-12 md:gap-3">
-              {CREW.map((c, i) => {
-                const all = word === WORDS.length - 1;
-                const active = i === word;
-                const done = all || i < word;
-                return (
-                  <div key={c.who} data-intro-tile>
-                    <div
-                      className={clsx(
-                        "relative aspect-[3/4] overflow-hidden rounded-xl text-ink transition-all duration-500 ease-out-expo md:rounded-2xl",
-                        c.tone,
-                        active || all
-                          ? "opacity-100"
-                          : done
-                            ? "opacity-70"
-                            : "opacity-30",
-                      )}
-                    >
-                      <Character
-                        who={c.who}
-                        mood={c.mood}
-                        body={c.body}
-                        size={180}
-                        style={{
-                          width: "112%",
-                          height: "auto",
-                          aspectRatio: "1",
-                        }}
-                        className={clsx(
-                          "absolute -bottom-[6%] left-1/2 -translate-x-1/2 transition-transform duration-700 ease-out-expo",
-                          active || all ? "translate-y-0" : "translate-y-[14%]",
-                        )}
-                      />
-                      {/* agent task card */}
-                      <div
-                        className={clsx(
-                          "absolute inset-x-2 top-2 hidden rounded-lg bg-card/95 p-2 shadow-sm transition-all duration-500 ease-out-expo sm:block",
-                          active || done
-                            ? "translate-y-0 opacity-100"
-                            : "-translate-y-2 opacity-0",
-                        )}
-                      >
-                        <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink/50 md:text-[11px]">
-                          {done ? (
-                            <Check className="size-3 text-ink" />
-                          ) : (
-                            <Sparkles className="size-3" />
-                          )}
-                          {c.agent}
-                        </p>
-                        <p className="mt-0.5 truncate text-[11px] font-medium leading-tight md:text-[13px]">
-                          {done ? "Checked by our team" : c.task}
-                        </p>
-                        <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-ink/10">
-                          <div
-                            key={`${c.who}-${active}`}
-                            className={clsx(
-                              "h-full origin-left rounded-full bg-ink",
-                              done
-                                ? ""
-                                : active
-                                  ? "animate-[grow_.2s_linear_both]"
-                                  : "scale-x-0",
-                            )}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* one task: drafted by an AI agent, approved by our team */}
+            <div className="mt-8 flex items-end gap-3 md:mt-12 md:gap-4">
+              <div
+                data-intro-card
+                className={clsx(
+                  "relative h-[150px] w-[120px] overflow-hidden rounded-2xl text-ink md:h-[200px] md:w-[160px]",
+                  VISUAL_TONE["enquiry-desk"],
+                )}
+              >
+                <div data-intro-peep className="absolute inset-x-0 bottom-0">
+                  <Character
+                    who="leo"
+                    mood="calm"
+                    body="Coffee"
+                    size={180}
+                    style={{
+                      width: "118%",
+                      height: "auto",
+                      aspectRatio: "1",
+                      marginLeft: "-9%",
+                    }}
+                    className="translate-y-[6%]"
+                  />
+                </div>
+              </div>
+              <div
+                data-intro-card
+                className="w-[min(320px,58vw)] rounded-2xl bg-card p-4 text-ink shadow-[0_30px_60px_-30px_rgba(0,0,0,.6)] md:p-5"
+              >
+                <p className="flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-ink/55">
+                  {step === 0 ? (
+                    <Sparkles className="size-3.5" />
+                  ) : (
+                    <Check className="size-3.5 text-ink" />
+                  )}
+                  <span key={step} className="animate-[fadeIn_.35s_ease]">
+                    {step === 0 ? "AI agent drafting" : "Approved by our team"}
+                  </span>
+                </p>
+                <p className="mt-2 flex items-start gap-2 text-[15px] font-medium leading-snug md:text-[16px]">
+                  <WhatsAppIcon className="mt-0.5 size-4 shrink-0 text-ink/60" />
+                  Reply to Fatima: &ldquo;Yes, we have 3pm on Saturday.&rdquo;
+                </p>
+                <div className="mt-3 h-1 overflow-hidden rounded-full bg-ink/10">
+                  <div
+                    data-intro-bar
+                    className="h-full origin-left rounded-full bg-ink"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <p
