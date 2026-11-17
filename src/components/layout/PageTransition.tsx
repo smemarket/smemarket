@@ -7,10 +7,10 @@ import { setCovered } from "@/lib/reveal";
 import { getLenis } from "./SmoothScroll";
 import { stripBase } from "@/lib/image-loader";
 import clsx from "clsx";
-import { Check, Sparkles } from "lucide-react";
 import Character from "@/components/ui/Character";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { SERVICES } from "@/lib/site";
+import { SPECIALIST } from "@/lib/specialists";
 
 /*
  * One overlay, three jobs:
@@ -37,8 +37,6 @@ export default function PageTransition() {
   const router = useRouter();
   // the intro only plays on a fresh load of the home page; decided on the server so there's no flash
   const [intro] = useState(() => pathname === "/");
-  // 0: the AI agent is drafting · 1: our team has checked it
-  const [step, setStep] = useState(0);
 
   const root = useRef<HTMLDivElement>(null);
   const busy = useRef(false);
@@ -84,7 +82,7 @@ export default function PageTransition() {
       };
     }
 
-    // two beats, each held long enough to read
+    // one headline, one motion: the team rises into place, then the curtain lifts
     const tl = gsap.timeline();
     tl.from(
       "[data-intro-logo]",
@@ -93,36 +91,39 @@ export default function PageTransition() {
     )
       .from(
         "[data-intro-l1]",
-        { yPercent: 110, duration: 0.8, ease: "expo.out" },
+        { yPercent: 110, duration: 0.9, ease: "expo.out" },
         0.1,
       )
       .from(
-        "[data-intro-card]",
-        { y: 30, opacity: 0, duration: 0.8, ease: "expo.out" },
-        0.2,
+        "[data-intro-tile]",
+        {
+          yPercent: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "expo.out",
+          stagger: 0.08,
+        },
+        0.25,
       )
-      .fromTo(
-        "[data-intro-bar]",
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.8, ease: "power1.inOut" },
-        0.35,
+      .from(
+        "[data-intro-peep]",
+        { yPercent: 60, duration: 0.9, ease: "expo.out", stagger: 0.08 },
+        0.4,
       )
-      .add(() => setStep(1), 1.15)
+      .from(
+        "[data-intro-tag]",
+        { y: -8, opacity: 0, duration: 0.5, ease: "power3.out", stagger: 0.08 },
+        0.7,
+      )
       .from(
         "[data-intro-l2]",
-        { yPercent: 110, duration: 0.8, ease: "expo.out" },
-        1.15,
-      )
-      .fromTo(
-        "[data-intro-peep]",
-        { yPercent: 100 },
-        { yPercent: 0, duration: 0.8, ease: "expo.out" },
-        1.1,
+        { y: 14, opacity: 0, duration: 0.7, ease: "power3.out" },
+        1.05,
       )
       .to(
         "[data-intro-ui]",
         { yPercent: -6, opacity: 0, duration: 0.45, ease: "power3.in" },
-        2.15,
+        2.1,
       )
       .to(
         "[data-intro]",
@@ -133,9 +134,9 @@ export default function PageTransition() {
           duration: 0.85,
           ease: EASE,
         },
-        2.3,
+        2.25,
       )
-      .add(() => setCovered(false), 2.45)
+      .add(() => setCovered(false), 2.4)
       .add(finish);
     return () => {
       cancelAnimationFrame(hold);
@@ -339,76 +340,66 @@ export default function PageTransition() {
             className="h-7 w-auto self-start md:h-8"
           />
           <div className="flex flex-col items-center">
-            <h2 className="display text-center text-[clamp(2.2rem,5.4vw,5rem)] leading-[1.05]">
-              <span className="block overflow-hidden pb-[0.08em]">
-                <span data-intro-l1 className="block">
-                  AI does the work.
-                </span>
-              </span>
-              <span className="block overflow-hidden pb-[0.08em]">
-                <span data-intro-l2 className="block text-lime">
-                  Our team checks it.
-                </span>
+            <h2 className="display overflow-hidden pb-[0.08em] text-center text-[clamp(2.4rem,6vw,5.6rem)] leading-[1.05]">
+              <span data-intro-l1 className="block">
+                Meet your growth team.
               </span>
             </h2>
 
-            {/* one task: drafted by an AI agent, approved by our team */}
-            <div className="mt-8 flex items-end gap-3 md:mt-12 md:gap-4">
-              <div
-                data-intro-card
-                className={clsx(
-                  "relative h-[150px] w-[120px] overflow-hidden rounded-2xl text-ink md:h-[200px] md:w-[160px]",
-                  VISUAL_TONE["enquiry-desk"],
-                )}
-              >
-                <div data-intro-peep className="absolute inset-x-0 bottom-0">
-                  <Character
-                    who="leo"
-                    mood="calm"
-                    body="Coffee"
-                    size={180}
-                    style={{
-                      width: "118%",
-                      height: "auto",
-                      aspectRatio: "1",
-                      marginLeft: "-9%",
-                    }}
-                    className="translate-y-[6%]"
-                  />
-                </div>
-              </div>
-              <div
-                data-intro-card
-                className="w-[min(320px,58vw)] rounded-2xl bg-card p-4 text-ink shadow-[0_30px_60px_-30px_rgba(0,0,0,.6)] md:p-5"
-              >
-                <p className="flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-ink/55">
-                  {step === 0 ? (
-                    <Sparkles className="size-3.5" />
-                  ) : (
-                    <Check className="size-3.5 text-ink" />
-                  )}
-                  <span key={step} className="animate-[fadeIn_.35s_ease]">
-                    {step === 0 ? "AI agent drafting" : "Approved by our team"}
-                  </span>
-                </p>
-                <p className="mt-2 flex items-start gap-2 text-[15px] font-medium leading-snug md:text-[16px]">
-                  <WhatsAppIcon className="mt-0.5 size-4 shrink-0 text-ink/60" />
-                  Reply to Fatima: &ldquo;Yes, we have 3pm on Saturday.&rdquo;
-                </p>
-                <div className="mt-3 h-1 overflow-hidden rounded-full bg-ink/10">
+            {/* the six specialists, one per service */}
+            <div className="mt-8 grid w-full max-w-[880px] grid-cols-6 gap-1.5 sm:gap-3 md:mt-12">
+              {SERVICES.map((sv) => {
+                const sp = SPECIALIST[sv.slug];
+                return (
                   <div
-                    data-intro-bar
-                    className="h-full origin-left rounded-full bg-ink"
-                  />
-                </div>
-              </div>
+                    key={sv.slug}
+                    data-intro-tile
+                    className={clsx(
+                      "relative h-[clamp(110px,18vw,200px)] overflow-hidden rounded-xl text-ink sm:rounded-2xl",
+                      VISUAL_TONE[sv.slug],
+                    )}
+                  >
+                    <span
+                      data-intro-tag
+                      className="absolute inset-x-0 top-2 z-10 hidden text-center text-[12px] font-semibold text-ink/60 sm:block md:top-3 md:text-[13px]"
+                    >
+                      {sv.short}
+                    </span>
+                    <div
+                      data-intro-peep
+                      className="absolute inset-x-0 bottom-0 flex justify-center"
+                    >
+                      <Character
+                        who={sp.who}
+                        mood={sp.mood}
+                        body={sp.body}
+                        size={200}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          aspectRatio: "1",
+                        }}
+                        className="translate-y-[16%]"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+
+            <p
+              data-intro-l2
+              className="mt-8 max-w-xl text-center text-[clamp(1.05rem,1.6vw,1.35rem)] leading-snug text-paper/70 md:mt-10"
+            >
+              Six AI agents doing the work.{" "}
+              <span className="text-lime">Our team checking every move.</span>
+            </p>
           </div>
           <p
             data-intro-line
             className="flex justify-between gap-4 border-t border-paper/15 pt-4 text-[14px] text-paper/55"
           >
-            <span>AI agents for UAE businesses, checked by our team</span>
+            <span>AI-powered growth for UAE businesses</span>
             <span className="hidden sm:block">SME Market</span>
           </p>
         </div>
