@@ -13,6 +13,9 @@ export const SITE = {
   licence: "2654774.01",
 };
 
+/** Lower-cases the first letter for mid-sentence use, leaving acronyms like "SEO" or "AI" alone. */
+export const midSentence = (t: string) => (/^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
+
 export function waLink(message = "Hi SME Market, I'd like to grow my business.") {
   return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
 }

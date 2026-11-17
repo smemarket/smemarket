@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Phone, Mail, MapPin } from "lucide-react";
-import { SITE, waLink, mailLink } from "@/lib/site";
+import Image from "next/image";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { SITE, SERVICES, waLink, mailLink } from "@/lib/site";
+import { SPECIALIST } from "@/lib/specialists";
 import EnquiryForm from "@/components/forms/EnquiryForm";
-import SectionHead from "@/components/ui/SectionHead";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { Avatar } from "@/components/ui/Character";
+import { Reveal, SplitHeading } from "@/components/ui/Reveal";
+import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -11,44 +15,130 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-const CHANNELS = [
-  { icon: <WhatsAppIcon className="size-5" />, k: "WhatsApp", v: SITE.phone, note: "Fastest reply", href: waLink("Hi SME Market, I'd like to talk about growing my business.") },
-  { icon: <Phone className="size-5" />, k: "Call", v: SITE.phone, note: "Business hours", href: SITE.phoneHref },
-  { icon: <Mail className="size-5" />, k: "Email", v: SITE.email, note: "For detailed questions", href: mailLink() },
+const NEXT = [
+  { t: "You send a message", d: "Here, on WhatsApp, by phone or email. Whatever's easiest for you." },
+  { t: "Our team replies", d: "Within one business day, with a couple of questions about your business." },
+  { t: "You get a free plan", d: "What to fix first and which services fit. No obligation to sign up." },
 ];
 
 export default function ContactPage() {
   return (
-    <section className="bg-paper pb-24 pt-32 md:pb-32 md:pt-40">
-      <div className="container-x">
-        <SectionHead as="h1" eyebrow="Contact" title="Talk to our team." intro="Tell us about your business and what you need. We reply within one business day." />
-        <div className="mt-14 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          <div className="grid content-start gap-3">
-            {CHANNELS.map((c) => (
-              <a key={c.k} href={c.href} {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="flex items-center gap-4 rounded-2xl border border-rule bg-card p-5 transition hover:border-ink">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-paper-2">{c.icon}</span>
-                <span className="min-w-0">
-                  <span className="block text-[15px] text-muted">
-                    {c.k} · {c.note}
-                  </span>
-                  <span className="block truncate text-[18px] font-semibold">{c.v}</span>
-                </span>
-              </a>
-            ))}
-            <div className="flex items-start gap-4 p-5 text-[16px] text-ink-2">
-              <MapPin className="mt-1 size-5 shrink-0" />
-              <p>
-                {SITE.legal}
-                <br />
-                {SITE.address} · Licence {SITE.licence}
+    <>
+      <section className="bg-paper pb-16 pt-28 md:pt-36">
+        <div className="container-x">
+          <div className="grid items-end gap-8 lg:grid-cols-[1.4fr_1fr]">
+            <div>
+              <p className="label">Contact</p>
+              <SplitHeading as="h1" immediate className="display mt-4 text-[clamp(2.8rem,min(6.6vw,11vh),6.2rem)]">
+                Talk to our team.
+              </SplitHeading>
+              <p className="mt-5 max-w-xl animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_.3s_both] text-[20px] leading-relaxed text-ink-2">
+                Tell us about your business and what you need. We reply within one business day.
               </p>
             </div>
+            {/* the team, one chat away */}
+            <div className="animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_.45s_both] lg:justify-self-end">
+              <div className="flex -space-x-3">
+                {SERVICES.map((s, i) => {
+                  const sp = SPECIALIST[s.slug];
+                  return (
+                    <span key={s.slug} className="rounded-full ring-4 ring-paper transition-transform duration-500 ease-out-expo hover:-translate-y-1.5" style={{ zIndex: 10 - i }}>
+                      <Avatar who={sp.who} mood={sp.mood} body={sp.body} size={58} tone={VISUAL_TONE[s.slug]} />
+                    </span>
+                  );
+                })}
+              </div>
+              <p className="mt-3 text-[15px] text-muted">Your growth team, one message away.</p>
+            </div>
           </div>
-          <div className="rounded-2xl border border-rule bg-card p-6 md:p-9">
-            <EnquiryForm type="contact" meta={{ source: "contact" }} />
+
+          <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-8">
+            <Reveal className="grid content-start gap-4" stagger={0.08}>
+              <a
+                data-reveal
+                href={waLink("Hi SME Market, I'd like to talk about growing my business.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[28px] bg-ink p-7 text-paper md:p-8"
+              >
+                <span className="flex items-start justify-between">
+                  <span className="grid size-14 place-items-center rounded-2xl bg-[#25D366] text-white transition-transform duration-500 ease-out-expo group-hover:-rotate-6 group-hover:scale-105">
+                    <WhatsAppIcon className="size-7" />
+                  </span>
+                  <ArrowUpRight className="size-6 text-paper/60 transition-transform duration-300 group-hover:rotate-45 group-hover:text-paper" />
+                </span>
+                <span>
+                  <span className="block text-[15px] text-paper/60">WhatsApp · fastest reply</span>
+                  <span className="mt-1 block text-[clamp(1.6rem,3vw,2.2rem)] font-semibold tracking-tight">{SITE.phone}</span>
+                </span>
+              </a>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <a data-reveal href={SITE.phoneHref} className="group flex flex-col justify-between gap-8 rounded-[28px] bg-[#f6e3b5] p-6 text-ink">
+                  <span className="flex items-start justify-between">
+                    <Phone className="size-6" />
+                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:rotate-45" />
+                  </span>
+                  <span>
+                    <span className="block text-[14px] text-ink/60">Call us</span>
+                    <span className="block text-[18px] font-semibold">{SITE.phone}</span>
+                  </span>
+                </a>
+                <a data-reveal href={mailLink()} className="group flex min-w-0 flex-col justify-between gap-8 rounded-[28px] bg-[#dbe6ef] p-6 text-ink">
+                  <span className="flex items-start justify-between">
+                    <Mail className="size-6" />
+                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:rotate-45" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[14px] text-ink/60">Email us</span>
+                    <span className="block truncate text-[18px] font-semibold">{SITE.email}</span>
+                  </span>
+                </a>
+              </div>
+
+              <div data-reveal className="group relative min-h-[220px] overflow-hidden rounded-[28px]">
+                <Image quality={90} src="/images/dubai-day.jpg" alt="Dubai" fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
+                <p className="absolute inset-x-0 bottom-0 flex items-start gap-3 p-6 text-[15px] leading-relaxed text-paper">
+                  <MapPin className="mt-0.5 size-5 shrink-0" />
+                  <span>
+                    <span className="block font-semibold">{SITE.legal}</span>
+                    {SITE.address} · Licence {SITE.licence}
+                    <span className="block text-paper/70">Serving all seven emirates</span>
+                  </span>
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="min-w-0 animate-[pageIn_.9s_cubic-bezier(.16,1,.3,1)_.35s_both] lg:sticky lg:top-28 lg:self-start">
+              <div className="rounded-[28px] bg-card p-6 shadow-[0_40px_80px_-60px_rgba(21,19,15,.6)] ring-1 ring-rule md:p-9">
+                <p className="text-[15px] font-semibold text-muted">Send us a message</p>
+                <p className="display mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">We&apos;ll take it from here.</p>
+                <div className="mt-6">
+                  <EnquiryForm type="contact" meta={{ source: "contact" }} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* what happens next */}
+      <section className="bg-paper-2 section-y">
+        <div className="container-x">
+          <p className="label">After you send it</p>
+          <SplitHeading className="display mt-4 text-section">What happens next.</SplitHeading>
+          <Reveal className="relative mt-12 grid gap-4 md:grid-cols-3" stagger={0.12}>
+            {NEXT.map((n, i) => (
+              <div key={n.t} data-reveal className="relative rounded-[28px] bg-card p-7 md:p-8">
+                <span className="grid size-11 place-items-center rounded-full bg-ink text-[16px] font-semibold text-lime">{i + 1}</span>
+                <h3 className="mt-8 text-[22px] font-semibold">{n.t}</h3>
+                <p className="mt-2 text-[16px] leading-relaxed text-ink-2">{n.d}</p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+    </>
   );
 }

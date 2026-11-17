@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { onReveal } from "@/lib/reveal";
 import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
 
 type Tagish = "div" | "section" | "h1" | "h2" | "h3" | "p" | "span" | "ul";
@@ -50,15 +51,21 @@ export function SplitHeading({ children, className, as = "h2", delay = 0, immedi
     () => {
       if (!ref.current || prefersReducedMotion()) return;
       const split = SplitText.create(ref.current, { type: "lines,words", mask: "lines", linesClass: "pt-[0.06em] pb-[0.16em] -mb-[0.16em]" });
-      gsap.from(split.words, {
+      const tween = gsap.from(split.words, {
         yPercent: 115,
         duration: 1.2,
         ease: "expo.out",
         stagger: 0.04,
         delay,
+        paused: immediate,
         scrollTrigger: immediate ? undefined : { trigger: ref.current, start: "top 86%", once: true },
       });
-      return () => split.revert();
+      // page-top headlines wait for the loader or page transition to lift
+      const cancel = immediate ? onReveal(() => tween.play()) : () => {};
+      return () => {
+        cancel();
+        split.revert();
+      };
     },
     { scope: ref },
   );

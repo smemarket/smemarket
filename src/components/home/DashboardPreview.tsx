@@ -300,11 +300,11 @@ function Overview({ enq, tasks, first, decide, onAll }: { enq: number; tasks: Ta
       <Kpis items={[{ l: "Enquiries this month", v: String(enq), d: "+18% vs last month" }, { l: "Cost per enquiry", v: "AED 46", d: "-12% vs last month" }, { l: "First reply", v: "9 sec", d: "24/7" }]} />
       <div className="border-b border-rule-dark p-5">
         <p className="text-[15px] font-medium">Enquiries, last 14 weeks</p>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-4 h-36 w-full overflow-visible sm:h-44">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-4 h-36 w-full animate-[wipeIn_1.4s_cubic-bezier(.65,0,.35,1)_both] overflow-visible sm:h-44">
           {[25, 50, 75].map((y) => (
             <line key={y} x1="0" x2="100" y1={y} y2={y} stroke="rgba(242,238,230,.08)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
           ))}
-          <polyline points={pts} fill="none" stroke="#d4ff3f" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" className="[stroke-dasharray:400] animate-[draw_1.4s_ease-out_both]" pathLength={400} />
+          <polyline points={pts} fill="none" stroke="#d4ff3f" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
         </svg>
       </div>
       {first ? (
