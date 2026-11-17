@@ -1,0 +1,381 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   SME Market · "The Market" design system
+   Paper + ink. Red is for human approval (stamps).
+   Lime is the brand mark: logo + highlighter only.
+   ───────────────────────────────────────────── */
+@theme {
+  --color-paper: #f2eee6;
+  --color-paper-2: #e8e2d5;
+  --color-card: #fbf9f4;
+  --color-ink: #15130f;
+  --color-ink-2: #24211c;
+  --color-ink-3: #33302a;
+  --color-muted: #6c665b;
+  --color-faint: #9b9488;
+  --color-rule: rgb(21 19 15 / 0.14);
+  --color-rule-strong: rgb(21 19 15 / 0.28);
+  --color-rule-dark: rgb(242 238 230 / 0.14);
+  --color-stamp: #e0402a;
+  --color-lime: #d4ff3f;
+
+  --font-sans: var(--ff-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--ff-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-paper);
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .container-x {
+      padding-inline: 44px;
+    }
+  }
+
+  /* Section eyebrow: plain, readable */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-muted);
+    display: block;
+  }
+
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+  .display em {
+    font-style: normal;
+    color: var(--color-muted);
+  }
+
+  .field {
+    width: 100%;
+    background: var(--color-card);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 16px;
+    color: var(--color-ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field::placeholder {
+    color: var(--color-faint);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px rgb(21 19 15 / 0.08);
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--color-stamp);
+  }
+
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes printIn {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes thunk {
+  0% {
+    opacity: 0;
+    transform: scale(1.9) rotate(var(--rot, -8deg));
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.94) rotate(var(--rot, -8deg));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--rot, -8deg));
+  }
+}
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(var(--tilt, 4deg));
+  }
+  50% {
+    transform: rotate(calc(var(--tilt, 4deg) * -0.6));
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+}
+.animate-print {
+  animation: printIn 0.45s steps(6) both;
+}
+.animate-thunk {
+  animation: thunk 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.animate-swing {
+  transform-origin: top center;
+  animation: swing 5s ease-in-out infinite;
+}
+.cursor-blink::after {
+  content: "_";
+  animation: blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Footer curtain reveal, only where the whole footer fits on screen */
+@media (min-width: 1024px) and (min-height: 760px) {
+  .footer-curtain {
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Every clickable thing gets a pointer */
+a[href],
+button:not(:disabled),
+[role="button"],
+label[for],
+select,
+summary,
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Fluid sizes that respect screen height too, so 1366x768 laptops stay in proportion */
+@layer components {
+  .text-hero {
+    font-size: clamp(2.6rem, min(5.6vw, 10vh), 5.8rem);
+  }
+  .text-section {
+    font-size: clamp(2rem, min(3.6vw, 6.4vh), 3.6rem);
+  }
+  .text-footer {
+    font-size: clamp(2.6rem, min(7vw, 12vh), 6.5rem);
+  }
+  .section-y {
+    padding-block: clamp(4rem, 11vh, 8rem);
+  }
+}
+
+/* Smooth by default: anything clickable eases between states unless it sets its own transition */
+@layer base {
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: 0.25s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+  }
+  55% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes bagShake {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-14deg) scale(1.12);
+  }
+  45% {
+    transform: rotate(10deg) scale(1.08);
+  }
+  70% {
+    transform: rotate(-5deg);
+  }
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tickerIn {
+  from {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes barUp {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes introWord {
+  from {
+    opacity: 0;
+    transform: translateY(40%);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+/* if scripts never run, the intro curtain still gets out of the way */
+@keyframes introFailsafe {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+.intro-failsafe {
+  animation: introFailsafe 0.4s ease 5s forwards;
+}
+/* while a page sinks back during navigation, the space around it is ink */
+body.is-transitioning {
+  background: var(--color-ink);
+}
