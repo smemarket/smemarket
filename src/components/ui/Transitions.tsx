@@ -116,6 +116,27 @@ export function Slant({ children }: { children: React.ReactNode }) {
   return <div ref={ref}>{children}</div>;
 }
 
+/** Wraps a section so it arrives as an inset, round-topped panel that widens to full bleed. */
+export function Widen({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !ref.current) return;
+      gsap.fromTo(
+        ref.current,
+        { clipPath: "inset(0% 7% 0% 7% round 56px 56px 0px 0px)" },
+        {
+          clipPath: "inset(0% 0% 0% 0% round 0px 0px 0px 0px)",
+          ease: "none",
+          scrollTrigger: { trigger: ref.current, start: "top bottom", end: "top 25%", scrub: true },
+        },
+      );
+    },
+    { scope: ref },
+  );
+  return <div ref={ref}>{children}</div>;
+}
+
 /** The background quietly tints from the previous section's colour into this one's as you scroll. */
 export function Sweep({ children, from = "bg-paper", to = "bg-paper-2" }: { children: React.ReactNode; from?: string; to?: string }) {
   const ref = useRef<HTMLDivElement>(null);

@@ -4,7 +4,11 @@ import { SITE } from "@/lib/site";
 import { SplitHeading } from "@/components/ui/Reveal";
 import Character from "@/components/ui/Character";
 
-export const metadata: Metadata = { title: "Privacy", alternates: { canonical: "/privacy" } };
+export const metadata: Metadata = {
+  title: "Privacy",
+  description: "What SME Market collects when you enquire or take the growth assessment, how we use it, and how to have it deleted.",
+  alternates: { canonical: "/privacy" },
+};
 
 const SECTIONS = [
   {

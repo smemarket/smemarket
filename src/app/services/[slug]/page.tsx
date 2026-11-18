@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Phone } from "lucide-react";
-import { SERVICES, SITE, getService, midSentence, waLink } from "@/lib/site";
+import { OG_IMAGE, SERVICES, SITE, getService, midSentence, waLink } from "@/lib/site";
 import { SPECIALIST } from "@/lib/specialists";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import Character from "@/components/ui/Character";
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${s.name} for UAE SMEs`,
     description: `${s.promise} The KPI we report every month: ${s.kpi}.`,
     alternates: { canonical: `/services/${s.slug}` },
-    openGraph: { title: `${s.name} | SME Market`, description: s.promise },
+    openGraph: { title: `${s.name} | SME Market`, description: s.promise, url: `/services/${s.slug}`, images: [OG_IMAGE] },
   };
 }
 

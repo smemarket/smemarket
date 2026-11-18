@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Check, Loader2, Sparkles, Phone, Gauge, Clock, ShieldCheck } from "lucide-react";
 import { SERVICES, MONTHLY, BUNDLE_PRICE, BUNDLE_SAVING, SITE, aed, waLink } from "@/lib/site";
 import { submitLead, isEmail, isPhone } from "@/lib/leads";
+import { WhatsAppPending } from "@/components/forms/EnquiryForm";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import Character from "@/components/ui/Character";
@@ -537,6 +538,8 @@ function Result({ result, onRetake, answers, openPlan }: { result: ResultData; o
 function PlanCapture({ total, recs, answers }: { total: number; recs: string[]; answers: Record<string, string | null> }) {
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
   const [err, setErr] = useState<Record<string, string>>({});
+  const [waPending, setWaPending] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -549,6 +552,7 @@ function PlanCapture({ total, recs, answers }: { total: number; recs: string[]; 
     setErr(er);
     if (Object.keys(er).length) return;
     setState("sending");
+    setFirstName(v("name").split(" ")[0]);
     const res = await submitLead({
       type: "assessment",
       name: v("name"),
@@ -560,12 +564,21 @@ function PlanCapture({ total, recs, answers }: { total: number; recs: string[]; 
       meta: { score: total, answers },
       website: v("website"),
     });
-    if (res.ok) setState("done");
-    else {
+    if (res.ok) {
+      setWaPending(res.whatsapp ?? null);
+      setState("done");
+    } else {
       setState("idle");
       setErr({ form: res.error });
     }
   }
+
+  if (state === "done" && waPending)
+    return (
+      <div className="rounded-[28px] bg-card p-7 ring-1 ring-rule md:p-9">
+        <WhatsAppPending href={waPending} name={firstName} />
+      </div>
+    );
 
   if (state === "done")
     return (

@@ -70,8 +70,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href={mailLink()} className="break-all transition-colors hover:text-paper">
-                  {SITE.email}
+                <a href={mailLink()} className="transition-colors hover:text-paper">
+                  {/* if the column is narrow, wrap after the @ rather than mid-word */}
+                  {SITE.email.split("@")[0]}@<wbr />
+                  {SITE.email.split("@")[1]}
                 </a>
               </li>
               <li className="text-paper/50">{SITE.address}</li>

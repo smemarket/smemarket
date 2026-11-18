@@ -1,47 +1,18 @@
-"use client";
-import Peep from "react-peeps";
 import type { CSSProperties } from "react";
+import CAST_DATA from "@/lib/cast.json";
 
 /**
- * Open Peeps (CC0, by Pablo Stanley) via react-peeps.
+ * Open Peeps (CC0, by Pablo Stanley).
+ * Each character is pre-rendered to public/peeps/<who>-<mood>-<body>.svg by scripts/build-peeps.mjs
+ * (runs before dev and every build), so the 2 MB react-peeps library never reaches the browser.
+ * Add a cast member, mood or body in src/lib/cast.json.
  * A varied cast; use each character in one place only.
  */
-type Mood = "happy" | "tired" | "calm" | "excited" | "thinking" | "stressed" | "explaining";
-export type Cast = "omar" | "priya" | "aisha" | "karim" | "james" | "lina" | "rashid" | "maya" | "ben" | "noor" | "sami" | "zara" | "faisal" | "tom" | "hana" | "yusuf" | "mei" | "leo" | "dina" | "raj" | "sara";
+export type Mood = keyof typeof CAST_DATA.faces;
+export type Cast = keyof typeof CAST_DATA.cast;
+export type Body = "Shirt" | "Paper" | "Device" | "PointingUp" | "Coffee" | "Explaining";
 
-const FACE: Record<Mood, string> = {
-  happy: "Smile",
-  tired: "Tired",
-  calm: "Calm",
-  excited: "SmileBig",
-  thinking: "Concerned",
-  stressed: "Hectic",
-  explaining: "Explaining",
-};
-
-const CAST: Record<Cast, { hair: string; facialHair?: string; accessory?: string }> = {
-  omar: { hair: "ShortVolumed", facialHair: "FullMedium" },
-  priya: { hair: "Bun", accessory: "GlassRound" },
-  aisha: { hair: "LongCurly" },
-  karim: { hair: "ShortScratch", facialHair: "Goatee" },
-  james: { hair: "Afro", accessory: "GlassRoundThick" },
-  lina: { hair: "MediumBangs" },
-  rashid: { hair: "ShortWavy", facialHair: "Full" },
-  maya: { hair: "BunCurly", accessory: "GlassButterfly" },
-  ben: { hair: "MediumShort", facialHair: "Chin" },
-  noor: { hair: "Long" },
-  sami: { hair: "Bald", facialHair: "GoateeCircle", accessory: "GlassClubmaster" },
-  zara: { hair: "BantuKnots" },
-  faisal: { hair: "ShortCurly", facialHair: "Painters" },
-  tom: { hair: "Pomp", accessory: "GlassAviator" },
-  hana: { hair: "MediumStraight" },
-  yusuf: { hair: "FlatTop", facialHair: "Chin", accessory: "GlassRound" },
-  mei: { hair: "BunFancy" },
-  leo: { hair: "ShortCurly", accessory: "SunglassWayfarer" },
-  dina: { hair: "Twists" },
-  raj: { hair: "Turban", facialHair: "Full" },
-  sara: { hair: "LongBangs", accessory: "GlassButterflyOutline" },
-};
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export default function Character({
   who,
@@ -50,28 +21,29 @@ export default function Character({
   size = 200,
   className,
   style,
+  eager,
 }: {
   who: Cast;
   mood?: Mood;
-  body?: string;
+  body?: Body;
   size?: number;
   className?: string;
   style?: CSSProperties;
+  /** load straight away (for characters revealed by an animation rather than by scrolling) */
+  eager?: boolean;
 }) {
-  const c = CAST[who];
   return (
     <div aria-hidden className={className} style={{ width: size, height: size, ...style }}>
-      <Peep
-        style={{ width: "100%", height: "100%" }}
-        // default frame is 0 0 850 1200 and clips tall hair (buns); give it headroom
-        viewBox={{ x: "-50", y: "-130", width: "950", height: "1330" }}
-        body={body as never}
-        face={FACE[mood] as never}
-        hair={c.hair as never}
-        facialHair={(c.facialHair ?? "None") as never}
-        accessory={(c.accessory ?? "None") as never}
-        strokeColor="#15130f"
-        backgroundColor="#fbf9f4"
+      {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing for the optimiser to do */}
+      <img
+        src={`${BASE}/peeps/${who}-${mood}-${body}.svg`}
+        alt=""
+        width={size}
+        height={size}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        draggable={false}
+        className="block h-full w-full select-none"
       />
     </div>
   );

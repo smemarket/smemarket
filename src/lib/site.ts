@@ -1,6 +1,8 @@
 export const SITE = {
   name: "SME Market",
-  url: "https://www.smemarket.ae",
+  /** Where this site lives (Cloudflare Pages project "smemarket-growth", separate from the main www.smemarket.ae site).
+   *  Used for canonical links, the sitemap, robots.txt and share previews. Override with NEXT_PUBLIC_SITE_URL for a staging copy. */
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://growth.smemarket.ae").replace(/\/$/, ""),
   tagline: "Growth you can count.",
   description:
     "AI-powered marketing, sales and websites for UAE SMEs. One clear price and one KPI per service, with a team that signs off everything before it goes out.",
@@ -12,6 +14,9 @@ export const SITE = {
   address: "Meydan Free Zone, Dubai, UAE",
   licence: "2654774.01",
 };
+
+/** 1200×630 share card (public/og.png) for WhatsApp, LinkedIn, X and iMessage previews. */
+export const OG_IMAGE = { url: "/og.png", width: 1200, height: 630, alt: "SME Market: more enquiries, zero extra staff" };
 
 /** Lower-cases the first letter for mid-sentence use, leaving acronyms like "SEO" or "AI" alone. */
 export const midSentence = (t: string) => (/^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);

@@ -92,7 +92,7 @@ export default function ServiceList() {
                     <span className="block text-[19px] font-semibold leading-tight">{s.short}</span>
                   </div>
                   <div className="absolute bottom-0 right-3 lg:inset-x-0 lg:right-auto lg:flex lg:justify-center">
-                    <Character who={sp.who} mood={sp.mood} body={sp.body} size={150} className="h-[96px] w-[96px] translate-y-2 transition-transform duration-500 group-hover:-translate-y-1 lg:h-[170px] lg:w-[170px]" />
+                    <Character who={sp.who} mood={sp.mood} body={sp.body} size={150} className="h-[96px] w-[96px] origin-bottom translate-y-2 transition-transform duration-500 group-hover:scale-[1.06] lg:h-[170px] lg:w-[170px]" />
                   </div>
                 </div>
 

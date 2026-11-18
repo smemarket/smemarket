@@ -10,7 +10,7 @@ import Testimonials from "@/components/home/Testimonials";
 import Faq from "@/components/home/Faq";
 import FounderNote from "@/components/home/FounderNote";
 import { FAQ } from "@/lib/site";
-import { Drape, Slant, Sweep, Fold } from "@/components/ui/Transitions";
+import { Drape, Widen, Sweep, Fold } from "@/components/ui/Transitions";
 
 export default function Home() {
   return (
@@ -29,9 +29,9 @@ export default function Home() {
       </div>
       <Process />
       <div className="bg-paper-2">
-        <Slant>
+        <Widen>
           <Testimonials />
-        </Slant>
+        </Widen>
       </div>
       <Sweep from="bg-paper" to="bg-paper-2">
         <FounderNote />

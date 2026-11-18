@@ -22,7 +22,8 @@ export default function Testimonials() {
         />
       </div>
 
-      <div className="group/rows mt-14 space-y-5 [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
+      {/* the mask clips to this box, so pad it to leave room for the hover lift and shadow */}
+      <div className="group/rows -mb-16 -mt-2 space-y-5 py-16 [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
         <Row items={rowA} />
         <Row items={rowB} reverse />
       </div>

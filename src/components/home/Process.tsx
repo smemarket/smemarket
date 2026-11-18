@@ -1,11 +1,11 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { ArrowUpRight } from "lucide-react";
-import Character, { type Cast } from "@/components/ui/Character";
+import Character, { type Body, type Cast } from "@/components/ui/Character";
 import { Reveal } from "@/components/ui/Reveal";
 import Swipe from "@/components/ui/Swipe";
 
-const STEPS: { who: Cast; mood: "excited" | "thinking" | "happy"; body: string; tone: string; when: string; t: string; d: string }[] = [
+const STEPS: { who: Cast; mood: "excited" | "thinking" | "happy"; body: Body; tone: string; when: string; t: string; d: string }[] = [
   { who: "zara", mood: "excited", body: "Device", tone: "bg-[#e9f1c9]", when: "Today", t: "Take the free growth score", d: "Ten quick questions on your phone. See what to fix first." },
   { who: "faisal", mood: "thinking", body: "Paper", tone: "bg-[#f6e3b5]", when: "Same week", t: "Pick your services", d: "One service or all five. Build your plan in a minute." },
   { who: "tom", mood: "happy", body: "PointingUp", tone: "bg-[#dbe6ef]", when: "Within days", t: "Agents get to work", d: "You approve the plan and the first creative before anything goes live." },

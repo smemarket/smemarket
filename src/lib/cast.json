@@ -1,0 +1,35 @@
+{
+  "faces": {
+    "happy": "Smile",
+    "tired": "Tired",
+    "calm": "Calm",
+    "excited": "SmileBig",
+    "thinking": "Concerned",
+    "stressed": "Hectic",
+    "explaining": "Explaining"
+  },
+  "bodies": ["Shirt", "Paper", "Device", "PointingUp", "Coffee", "Explaining"],
+  "cast": {
+    "omar": { "hair": "ShortVolumed", "facialHair": "FullMedium" },
+    "priya": { "hair": "Bun", "accessory": "GlassRound" },
+    "aisha": { "hair": "LongCurly" },
+    "karim": { "hair": "ShortScratch", "facialHair": "Goatee" },
+    "james": { "hair": "Afro", "accessory": "GlassRoundThick" },
+    "lina": { "hair": "MediumBangs" },
+    "rashid": { "hair": "ShortWavy", "facialHair": "Full" },
+    "maya": { "hair": "BunCurly", "accessory": "GlassButterfly" },
+    "ben": { "hair": "MediumShort", "facialHair": "Chin" },
+    "noor": { "hair": "Long" },
+    "sami": { "hair": "Bald", "facialHair": "GoateeCircle", "accessory": "GlassClubmaster" },
+    "zara": { "hair": "BantuKnots" },
+    "faisal": { "hair": "ShortCurly", "facialHair": "Painters" },
+    "tom": { "hair": "Pomp", "accessory": "GlassAviator" },
+    "hana": { "hair": "MediumStraight" },
+    "yusuf": { "hair": "FlatTop", "facialHair": "Chin", "accessory": "GlassRound" },
+    "mei": { "hair": "BunFancy" },
+    "leo": { "hair": "ShortCurly", "accessory": "SunglassWayfarer" },
+    "dina": { "hair": "Twists" },
+    "raj": { "hair": "Turban", "facialHair": "Full" },
+    "sara": { "hair": "LongBangs", "accessory": "GlassButterflyOutline" }
+  }
+}

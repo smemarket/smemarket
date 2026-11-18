@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/build-peeps.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/build-peeps.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:pages": "rm -rf out && STATIC_EXPORT=1 node scripts/build-images.mjs && STATIC_EXPORT=1 next build"
+    "build:pages": "rm -rf out && node scripts/build-peeps.mjs && STATIC_EXPORT=1 node scripts/build-images.mjs && STATIC_EXPORT=1 next build"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -1,10 +1,10 @@
 import { Reveal } from "@/components/ui/Reveal";
 import SectionHead from "@/components/ui/SectionHead";
-import Character, { Avatar, type Cast } from "@/components/ui/Character";
+import Character, { Avatar, type Body, type Cast } from "@/components/ui/Character";
 import { DomeTop } from "@/components/ui/Transitions";
 import Swipe from "@/components/ui/Swipe";
 
-const PAINS: { who: Cast; mood: "thinking" | "stressed" | "tired"; body: string; tone: string; tag: string; t: string; d: string; fix: string }[] = [
+const PAINS: { who: Cast; mood: "thinking" | "stressed" | "tired"; body: Body; tone: string; tag: string; t: string; d: string; fix: string }[] = [
   {
     who: "karim",
     mood: "thinking",

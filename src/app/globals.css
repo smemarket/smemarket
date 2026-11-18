@@ -324,6 +324,30 @@ button:disabled {
   }
 }
 
+@keyframes chipIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.82);
+    filter: blur(10px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes chipOut {
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.92);
+    filter: blur(10px);
+  }
+}
+
 @keyframes viewIn {
   from {
     opacity: 0;

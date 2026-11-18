@@ -23,6 +23,7 @@ export default function EnquiryForm({ defaultServices = [], type = "enquiry", me
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const [name, setName] = useState("");
+  const [waPending, setWaPending] = useState<string | null>(null);
 
   const toggle = (slug: string) => setServices((s) => (s.includes(slug) ? s.filter((x) => x !== slug) : [...s, slug]));
 
@@ -52,12 +53,16 @@ export default function EnquiryForm({ defaultServices = [], type = "enquiry", me
       meta,
       website: v("website"),
     });
-    if (res.ok) setStatus("done");
-    else {
+    if (res.ok) {
+      setWaPending(res.whatsapp ?? null);
+      setStatus("done");
+    } else {
       setStatus("idle");
       setErrors({ form: res.error });
     }
   }
+
+  if (status === "done" && waPending) return <WhatsAppPending href={waPending} name={name} />;
 
   if (status === "done") {
     const chosen = services.map((s) => SERVICES.find((x) => x.slug === s)?.name).filter(Boolean).join(", ");
@@ -163,5 +168,30 @@ function Field({ label, optional, error, children }: { label: string; optional?:
       {children}
       {error && <span className="text-xs text-stamp">{error}</span>}
     </label>
+  );
+}
+
+/** Shown when the lead went out as a pre-filled WhatsApp chat: it only reaches us once they press send. */
+export function WhatsAppPending({ href, name }: { href: string; name?: string }) {
+  return (
+    <div className="flex animate-[pageIn_.6s_cubic-bezier(.16,1,.3,1)_both] flex-col items-start gap-5 py-4" role="status">
+      <span className="grid size-12 place-items-center rounded-full bg-lime text-ink">
+        <WhatsAppIcon className="size-6" />
+      </span>
+      <div>
+        <h3 className="display text-3xl">One last tap{name ? `, ${name}` : ""}.</h3>
+        <p className="mt-2 max-w-md text-ink-2">
+          We&apos;ve opened WhatsApp with your details filled in. Press <span className="font-semibold text-ink">send</span> there and our team will reply within one business day.
+        </p>
+      </div>
+      <div className="flex flex-wrap gap-3">
+        <Button href={href} icon={<WhatsAppIcon />}>
+          Open WhatsApp again
+        </Button>
+        <Button href={SITE.phoneHref} variant="outline" icon={<Phone className="size-4" />}>
+          Or call {SITE.phone}
+        </Button>
+      </div>
+    </div>
   );
 }

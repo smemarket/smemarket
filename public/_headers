@@ -1,0 +1,15 @@
+# Cloudflare Pages response headers (copied into out/ by the static build).
+
+# Next.js build files have a content hash in their name, so they can be cached forever.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pre-sized photos and the character drawings change rarely.
+/images/_w/*
+  Cache-Control: public, max-age=2592000
+/peeps/*
+  Cache-Control: public, max-age=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

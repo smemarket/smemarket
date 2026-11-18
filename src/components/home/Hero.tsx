@@ -2,23 +2,80 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Search, TrendingUp, UserCheck, Sparkles, ArrowUpRight, Check } from "lucide-react";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { Search, TrendingUp, UserCheck, Sparkles, ArrowUpRight, Check, Megaphone, Star, FileText, Mail, Bot, BarChart3, CalendarCheck } from "lucide-react";
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { onReveal } from "@/lib/reveal";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { waLink } from "@/lib/site";
 
+/** Agent activity the floaters cycle through. */
 const CHIPS = [
-  { icon: <WhatsAppIcon className="size-4" />, t: "New enquiry answered", s: "in 9 seconds", pos: "left-[2.5%] top-[22%]", depth: 28 },
-  { icon: <Search className="size-4" />, t: "Now #3 on Google Maps", s: "“dentist in JLT”", pos: "right-[2.5%] top-[26%]", depth: 16 },
-  { icon: <UserCheck className="size-4" />, t: "Approved by your team", s: "4 Instagram posts", pos: "left-[3.5%] top-[62%]", depth: 36 },
-  { icon: <TrendingUp className="size-4" />, t: "+18 enquiries", s: "this month", pos: "right-[3.5%] top-[66%]", depth: 22 },
+  { icon: <WhatsAppIcon className="size-4" />, t: "New enquiry answered", s: "in 9 seconds" },
+  { icon: <Search className="size-4" />, t: "Now #3 on Google Maps", s: "“dentist in JLT”" },
+  { icon: <UserCheck className="size-4" />, t: "Approved by your team", s: "4 Instagram posts" },
+  { icon: <TrendingUp className="size-4" />, t: "+18 enquiries", s: "this month" },
+  { icon: <Megaphone className="size-4" />, t: "Ad budget rebalanced", s: "moved to the best campaign" },
+  { icon: <Star className="size-4" />, t: "Review reply drafted", s: "for a new 5★ Google review" },
+  { icon: <FileText className="size-4" />, t: "Blog post published", s: "“best gym in Al Barsha”" },
+  { icon: <Mail className="size-4" />, t: "Outreach sent", s: "12 personal emails to clinics" },
+  { icon: <Bot className="size-4" />, t: "Mentioned by ChatGPT", s: "“top salons in Dubai”" },
+  { icon: <BarChart3 className="size-4" />, t: "Weekly report ready", s: "sent to your WhatsApp" },
+  { icon: <CalendarCheck className="size-4" />, t: "Booking confirmed", s: "Thursday, 4:30 pm" },
 ];
+
+/** Four floater slots near the edges; each new floater lands at one of its slot's spots. */
+const SLOTS = [
+  { depth: 28, spots: ["left-[2.5%] top-[22%]", "left-[4%] top-[15%]", "left-[1.5%] top-[31%]"] },
+  { depth: 16, spots: ["right-[2.5%] top-[26%]", "right-[4%] top-[17%]", "right-[1.5%] top-[35%]"] },
+  { depth: 36, spots: ["left-[3.5%] top-[62%]", "left-[1.5%] top-[71%]", "left-[4%] top-[53%]"] },
+  { depth: 22, spots: ["right-[3.5%] top-[66%]", "right-[1.5%] top-[56%]", "right-[4%] top-[75%]"] },
+];
+
+type Slot = { msg: number; spot: number; out: boolean; n: number };
+const OUT_MS = 550;
+
+/** Each slot swaps its floater on its own clock, so something is always changing somewhere. */
+function useChipCycle() {
+  const [slots, setSlots] = useState<Slot[]>(() => SLOTS.map((_, i) => ({ msg: i, spot: 0, out: false, n: 0 })));
+  const live = useRef(slots);
+  live.current = slots;
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timers = new Set<number>();
+    const later = (fn: () => void, ms: number) => {
+      const id = window.setTimeout(() => {
+        timers.delete(id);
+        fn();
+      }, ms);
+      timers.add(id);
+    };
+    const pick = <T,>(xs: T[]) => xs[Math.floor(Math.random() * xs.length)];
+
+    const swap = (s: number) => {
+      setSlots((p) => p.map((x, i) => (i === s ? { ...x, out: true } : x)));
+      later(() => {
+        const cur = live.current;
+        const used = new Set(cur.map((x) => x.msg));
+        const msg = pick(CHIPS.map((_, k) => k).filter((k) => !used.has(k)));
+        const spot = pick(SLOTS[s].spots.map((_, k) => k).filter((k) => k !== cur[s].spot));
+        setSlots((p) => p.map((x, i) => (i === s ? { msg, spot, out: false, n: x.n + 1 } : x)));
+        later(() => swap(s), 4200 + Math.random() * 3800);
+      }, OUT_MS);
+    };
+    // first swaps start after the intro, staggered so no two slots change together
+    [4200, 6300, 7900, 9800].forEach((d, s) => later(() => swap(s), d));
+    return () => timers.forEach((id) => clearTimeout(id));
+  }, []);
+
+  return slots;
+}
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
   const [count, setCount] = useState(0);
+  const slots = useChipCycle();
 
   useEffect(() => {
     let raf = 0;
@@ -49,13 +106,23 @@ export default function Hero() {
         });
       }
 
-      const tl = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 0.8 } });
-      tl.to("[data-frame]", { clipPath: "inset(9% 5% 9% 5% round 28px)", ease: "none" }, 0)
-        .to("[data-photo]", { scale: 1, ease: "none" }, 0)
-        .to("[data-content]", { y: -80, opacity: 0, ease: "none", duration: 0.45 }, 0)
-        .to("[data-chips]", { y: -140, opacity: 0, ease: "none", duration: 0.5 }, 0)
-        .fromTo("[data-end]", { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: "none", duration: 0.35 }, 0.55);
-      return () => cancel();
+      // Not scrubbed: the first small scroll plays the whole change, scrolling back to the top reverses it.
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut" } });
+      tl.to("[data-frame]", { clipPath: "inset(9% 5% 9% 5% round 28px)", duration: 1.1 }, 0)
+        .to("[data-photo]", { scale: 1, duration: 1.1 }, 0)
+        .to("[data-content]", { y: -80, opacity: 0, duration: 0.5, ease: "power2.in" }, 0)
+        .to("[data-chips]", { y: -140, opacity: 0, duration: 0.55, ease: "power2.in" }, 0)
+        .fromTo("[data-end]", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.45);
+      const st = ScrollTrigger.create({
+        trigger: root.current,
+        start: "top+=20 top",
+        onEnter: () => tl.timeScale(1).play(),
+        onLeaveBack: () => tl.timeScale(1.4).reverse(),
+      });
+      return () => {
+        cancel();
+        st.kill();
+      };
     },
     { scope: root },
   );
@@ -73,7 +140,7 @@ export default function Hero() {
   };
 
   return (
-    <section ref={root} onPointerMove={onMove} className="relative h-[190vh] bg-paper">
+    <section ref={root} onPointerMove={onMove} className="relative h-[112svh] bg-paper">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div data-frame className="absolute inset-0 overflow-hidden bg-ink" style={{ clipPath: "inset(0% 0% 0% 0% round 0px)" }}>
           <div data-photo-wrap className="absolute -inset-6">
@@ -85,12 +152,14 @@ export default function Hero() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_62%_58%_at_50%_52%,rgba(21,19,15,.7),transparent_78%)]" />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/85 to-transparent" />
 
-          <div data-content className="container-x relative z-10 flex h-full flex-col items-center justify-center pb-10 pt-24 text-center text-paper">
-            <div data-fade className="mb-6 xl:hidden">
+          <div data-content className="container-x relative z-10 flex h-full flex-col items-center justify-center-safe pb-10 pt-24 text-center text-paper">
+            <div data-fade className="mb-6 xl:hidden [@media(max-height:720px)]:hidden">
               <MobileTicker />
             </div>
             <p data-fade className="inline-flex items-center gap-2 rounded-full border border-paper/20 bg-ink/40 px-4 py-1.5 text-[14px] font-medium backdrop-blur">
-              <Sparkles className="size-4 text-lime" /> AI-powered growth for UAE small and medium businesses
+              <Sparkles className="size-4 text-lime" />
+              <span className="sm:hidden">AI growth for UAE SMEs</span>
+              <span className="hidden sm:inline">AI-powered growth for UAE small and medium businesses</span>
             </p>
             <h1 className="display mt-6 text-hero !leading-[1.04] tracking-[-0.045em]">
               <span className="block overflow-hidden pb-[0.08em]">
@@ -106,7 +175,7 @@ export default function Hero() {
               AI agents run your SEO, ads, social media, outreach and WhatsApp enquiries every day. Our team checks every move before it goes live.
             </p>
             <div data-fade className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-              <Link href="/assessment" className="group flex h-14 items-center gap-3 rounded-full bg-lime pl-7 pr-2 text-[17px] font-semibold text-ink shadow-[0_20px_50px_-15px_rgba(212,255,63,.55)] transition hover:scale-[1.03]">
+              <Link href="/assessment" className="group flex h-14 items-center gap-3 whitespace-nowrap rounded-full bg-lime pl-6 pr-2 text-[16px] font-semibold sm:pl-7 sm:text-[17px] text-ink shadow-[0_20px_50px_-15px_rgba(212,255,63,.55)] transition hover:scale-[1.03]">
                 Get my free growth score
                 <span className="grid size-10 place-items-center rounded-full bg-ink text-lime transition-transform duration-300 group-hover:rotate-45">
                   <ArrowUpRight className="size-5" />
@@ -116,7 +185,7 @@ export default function Hero() {
                 Talk to us on WhatsApp
               </Button>
             </div>
-            <ul data-fade className="mt-10 flex max-w-[760px] flex-wrap items-center justify-center gap-x-6 gap-y-2.5 text-[15px] text-paper/80">
+            <ul data-fade className="mt-10 hidden max-w-[760px] flex-wrap sm:flex items-center justify-center gap-x-6 gap-y-2.5 text-[15px] text-paper/80">
               {["6 services, one team", "Every move approved by our team", "One clear number per service"].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <Check className="size-4 text-lime" strokeWidth={3} />
@@ -127,17 +196,27 @@ export default function Hero() {
           </div>
 
           <div data-chips className="pointer-events-none absolute inset-0 z-10 hidden xl:block">
-            {CHIPS.map((c) => (
-              <div key={c.t} data-chip data-depth={c.depth} className={`absolute ${c.pos}`}>
-                <div data-float className="flex items-center gap-3 rounded-2xl border border-paper/15 bg-ink/55 py-3 pl-3 pr-5 text-paper shadow-2xl backdrop-blur-xl">
-                  <span className="grid size-9 place-items-center rounded-xl bg-lime text-ink">{c.icon}</span>
-                  <span className="text-left">
-                    <span className="block text-[15px] font-semibold leading-tight">{c.t}</span>
-                    <span className="block text-[13px] text-paper/60">{c.s}</span>
-                  </span>
+            {slots.map((sl, s) => {
+              const c = CHIPS[sl.msg];
+              return (
+                <div key={s} data-chip data-depth={SLOTS[s].depth} className={`absolute ${SLOTS[s].spots[sl.spot]}`}>
+                  <div data-float>
+                    <div
+                      key={sl.n}
+                      className={`flex items-center gap-3 rounded-2xl border border-paper/15 bg-ink/55 py-3 pl-3 pr-5 text-paper shadow-2xl backdrop-blur-xl ${
+                        sl.out ? "animate-[chipOut_.55s_cubic-bezier(.4,0,1,1)_both]" : sl.n ? "animate-[chipIn_.9s_cubic-bezier(.34,1.56,.64,1)_both]" : ""
+                      }`}
+                    >
+                      <span className="grid size-9 place-items-center rounded-xl bg-lime text-ink">{c.icon}</span>
+                      <span className="text-left">
+                        <span className="block text-[15px] font-semibold leading-tight">{c.t}</span>
+                        <span className="block text-[13px] text-paper/60">{c.s}</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div data-end className="pointer-events-none absolute inset-0 z-10 grid place-items-center px-6 text-center text-paper opacity-0">

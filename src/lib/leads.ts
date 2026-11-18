@@ -13,10 +13,17 @@ export type LeadPayload = {
   website?: string;
 };
 
-export type LeadResult = { ok: true; id: string } | { ok: false; error: string };
+/** `whatsapp` is set when the lead went out as a pre-filled WhatsApp chat, which only reaches us once the visitor presses send. */
+export type LeadResult = { ok: true; id: string; whatsapp?: string } | { ok: false; error: string };
 
-/** Where leads go on a static build (GitHub Pages): any URL that accepts a JSON POST (Formspree, Web3Forms, Make, Zapier, a Google Apps Script…). */
-const ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || "";
+/**
+ * Where leads go on a static build (GitHub Pages).
+ *  - Web3Forms (recommended, free): set NEXT_PUBLIC_LEAD_ACCESS_KEY to your access key; each lead is emailed to you.
+ *    The key is meant to be public, so it's fine in the browser bundle.
+ *  - Anything else that accepts a JSON POST (Formspree, Make, Zapier…): set NEXT_PUBLIC_LEAD_ENDPOINT to its URL.
+ */
+const ACCESS_KEY = process.env.NEXT_PUBLIC_LEAD_ACCESS_KEY || "";
+const ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || (ACCESS_KEY ? "https://api.web3forms.com/submit" : "");
 const STATIC = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
 
 /** Turns a lead into a ready-to-send WhatsApp message to our number. */
@@ -44,8 +51,9 @@ function leadMessage(l: LeadPayload) {
 export async function submitLead(lead: LeadPayload): Promise<LeadResult> {
   if (lead.website) return { ok: true, id: "ignored" }; // honeypot: quietly drop bots
   if (STATIC && !ENDPOINT) {
-    window.open(waLink(leadMessage(lead)), "_blank", "noopener,noreferrer");
-    return { ok: true, id: "whatsapp" };
+    const href = waLink(leadMessage(lead));
+    window.open(href, "_blank", "noopener,noreferrer");
+    return { ok: true, id: "whatsapp", whatsapp: href };
   }
   try {
     const res = await fetch(ENDPOINT || "/api/lead", {
@@ -55,6 +63,14 @@ export async function submitLead(lead: LeadPayload): Promise<LeadResult> {
         ...lead,
         page: typeof window !== "undefined" ? window.location.pathname : "",
         submittedAt: new Date().toISOString(),
+        // Web3Forms: authenticates the form, and shapes the email so it reads well in an inbox
+        ...(ACCESS_KEY && {
+          access_key: ACCESS_KEY,
+          subject: `New ${lead.type} from ${lead.name}${lead.business ? ` (${lead.business})` : ""}`,
+          from_name: "SME Market website",
+          services: lead.services?.join(", ") || "",
+          meta: lead.meta ? JSON.stringify(lead.meta) : "",
+        }),
       }),
     });
     const data = await res.json().catch(() => ({}));

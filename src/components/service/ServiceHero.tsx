@@ -41,10 +41,10 @@ export default function ServiceHero({ s }: { s: Service }) {
     <section ref={root} className="relative bg-paper pb-14 pt-28 md:pt-36 lg:pb-20">
       <div className="container-x grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
-          <Link data-h-fade href="/#services" className="inline-flex items-center gap-2 text-[15px] font-medium text-muted hover:text-ink">
+          <Link data-h-fade href="/#services" className="flex w-fit items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-ink">
             <ArrowLeft className="size-4" /> All services
           </Link>
-          <p data-h-fade className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-rule bg-card px-3.5 py-1.5 text-[14px] font-medium">
+          <p data-h-fade className="mt-7 flex w-fit items-center gap-2.5 rounded-full border border-rule bg-card px-3.5 py-1.5 text-[14px] font-medium">
             <span className="grid size-6 place-items-center rounded-full bg-ink text-[11px] font-semibold text-lime">{s.num}</span>
             {s.sub}
           </p>

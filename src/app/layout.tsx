@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { SITE, OG_IMAGE } from "@/lib/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBar from "@/components/layout/MobileBar";
@@ -26,8 +26,10 @@ export const metadata: Metadata = {
     title: "SME Market | Growth you can count",
     description: SITE.description,
     locale: "en_AE",
+    url: "/",
+    images: [OG_IMAGE],
   },
-  twitter: { card: "summary_large_image", title: "SME Market | Growth you can count", description: SITE.description },
+  twitter: { card: "summary_large_image", title: "SME Market | Growth you can count", description: SITE.description, images: [OG_IMAGE.url] },
   alternates: { canonical: "/" },
 };
 
