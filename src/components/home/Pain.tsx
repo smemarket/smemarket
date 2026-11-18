@@ -44,7 +44,7 @@ export default function Pain() {
       <div className="container-x">
         <div className="grid gap-8 lg:grid-cols-[1.7fr_1fr] lg:items-end lg:gap-12">
           <SectionHead eyebrow="Sound familiar?" title="Three ways small businesses lose customers every week." />
-          <div className="flex items-center gap-4 rounded-2xl bg-card p-5">
+          <div className="flex flex-col items-start gap-3 rounded-2xl bg-card p-5 sm:flex-row sm:items-center sm:gap-4">
             <div className="flex -space-x-3">
               {PAINS.map((p) => (
                 <Avatar key={p.who} who={p.who} mood={p.mood} body="Shirt" size={52} tone={`${p.tone} ring-[3px] ring-card`} />
@@ -55,7 +55,7 @@ export default function Pain() {
             </p>
           </div>
         </div>
-        <Reveal className="mt-14" stagger={0.08} start="top bottom">
+        <Reveal className="mt-10 md:mt-14" stagger={0.08} start="top bottom">
           <Swipe desktop="md:grid md:grid-cols-3 md:gap-5">
           {PAINS.map((p) => (
             <article key={p.who} data-reveal className="group h-full overflow-hidden rounded-3xl bg-card transition duration-500 hover:-translate-y-2 hover:shadow-[0_30px_60px_-35px_rgba(21,19,15,.45)]">

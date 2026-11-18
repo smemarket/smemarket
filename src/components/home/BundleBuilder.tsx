@@ -42,7 +42,9 @@ export default function BundleBuilder({ heading = true }: { heading?: boolean })
           />
         )}
 
-        <div className={clsx(heading && "mt-12")}>
+        {/* cards and bar share a wrapper, so the bar only sticks while the cards are on screen */}
+        <div className={clsx(heading && "mt-8 md:mt-12")}>
+        <div>
           <Swipe bp="sm" itemWidth="80%" desktop="sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {SERVICES.map((s) => {
             const on = sel.includes(s.slug);
@@ -100,7 +102,7 @@ export default function BundleBuilder({ heading = true }: { heading?: boolean })
         </div>
 
         {/* sticky plan bar: one line of total, one line of status, one action */}
-        <div className="sticky bottom-20 z-20 mt-8 lg:bottom-5">
+        <div className="sticky bottom-20 z-20 mt-5 md:mt-8 lg:bottom-5">
           <div className="flex items-center gap-3 rounded-[22px] bg-ink py-2.5 pl-5 pr-2.5 text-paper shadow-[0_24px_50px_-28px_rgba(21,19,15,.7)] sm:gap-4 sm:rounded-full sm:pl-7">
             <div className="min-w-0 flex-1">
               <p className="flex items-baseline gap-1.5 whitespace-nowrap sm:gap-2">
@@ -134,6 +136,7 @@ export default function BundleBuilder({ heading = true }: { heading?: boolean })
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </button>
           </div>
+        </div>
         </div>
       </div>
     </section>

@@ -92,8 +92,9 @@ export default function DashboardPreview() {
     () => {
       if (prefersReducedMotion()) return;
       const st = { trigger: sec.current, start: "top bottom", end: "top 10%", scrub: true };
-      gsap.fromTo("[data-portal]", { clipPath: "circle(0% at 50% 100%)" }, { clipPath: "circle(150% at 50% 100%)", ease: "none", scrollTrigger: st });
-      gsap.fromTo("[data-portal-content]", { opacity: 0, y: 60 }, { opacity: 1, y: 0, ease: "none", scrollTrigger: { ...st, start: "top 70%" } });
+      const at = window.matchMedia("(max-width: 767px)").matches ? "50% 260px" : "50% 100%";
+      gsap.fromTo("[data-portal]", { clipPath: `circle(0% at ${at})` }, { clipPath: `circle(150% at ${at})`, ease: "none", scrollTrigger: st });
+      gsap.fromTo("[data-portal-content]", { opacity: 0, y: 60 }, { opacity: 1, y: 0, ease: "none", scrollTrigger: { ...st, start: "top 55%" } });
     },
     { scope: sec },
   );
@@ -145,7 +146,7 @@ export default function DashboardPreview() {
           intro="Every task our agents run, what's waiting for your approval, and one clear number per service. Updated in real time."
         />
 
-        <div ref={box} className="mx-auto mt-14 max-w-6xl overflow-hidden rounded-2xl border border-rule-dark bg-ink-2">
+        <div ref={box} className="mx-auto mt-8 max-w-6xl md:mt-14 overflow-hidden rounded-2xl border border-rule-dark bg-ink-2">
           <div className="flex items-center justify-between border-b border-rule-dark px-5 py-3">
             <span className="text-[13px] text-paper/50">app.smemarket.ae</span>
             <span className="text-[13px] text-paper/50">Updated just now</span>
@@ -167,7 +168,7 @@ export default function DashboardPreview() {
           </div>
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-8 flex justify-center md:mt-12">
           <Button href="/assessment" size="lg" variant="paper" arrow>
             See what yours would track
           </Button>
@@ -201,7 +202,7 @@ function TabNav({ tab, setTab, badge }: { tab: Tab; setTab: (t: Tab) => void; ba
     <nav
       ref={wrap}
       aria-label="Dashboard sections"
-      className="relative flex gap-1 overflow-x-auto border-b border-rule-dark p-3 [scrollbar-width:none] md:flex-col md:overflow-visible md:border-b-0 md:border-r md:p-4 [&::-webkit-scrollbar]:hidden"
+      className="relative flex gap-1 overflow-x-auto border-b border-rule-dark p-3 [scrollbar-width:none] [mask-image:linear-gradient(to_right,#000_80%,transparent)] md:flex-col md:overflow-visible md:border-b-0 md:[mask-image:none] md:border-r md:p-4 [&::-webkit-scrollbar]:hidden"
     >
       {ind && <span aria-hidden className="absolute left-0 top-0 rounded-lg bg-paper/10 transition-all duration-500 ease-out-expo" style={{ transform: `translate(${ind.x}px, ${ind.y}px)`, width: ind.w, height: ind.h }} />}
       {TABS.map((l) => (
@@ -285,7 +286,7 @@ function Split({ children, side }: { children: React.ReactNode; side: React.Reac
   return (
     <div className="grid lg:grid-cols-[1.3fr_1fr]">
       <div className="min-w-0 border-rule-dark lg:border-r">{children}</div>
-      <div className="min-w-0">{side}</div>
+      <div className="hidden min-w-0 md:block">{side}</div>
     </div>
   );
 }
@@ -298,9 +299,9 @@ function Overview({ enq, tasks, first, decide, onAll }: { enq: number; tasks: Ta
   return (
     <Split side={<Activity tasks={tasks} />}>
       <Kpis items={[{ l: "Enquiries this month", v: String(enq), d: "+18% vs last month" }, { l: "Cost per enquiry", v: "AED 46", d: "-12% vs last month" }, { l: "First reply", v: "9 sec", d: "24/7" }]} />
-      <div className="border-b border-rule-dark p-5">
+      <div className="border-b border-rule-dark p-4 sm:p-5">
         <p className="text-[15px] font-medium">Enquiries, last 14 weeks</p>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-4 h-36 w-full animate-[wipeIn_1.4s_cubic-bezier(.65,0,.35,1)_both] overflow-visible sm:h-44">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-3 h-24 w-full animate-[wipeIn_1.4s_cubic-bezier(.65,0,.35,1)_both] overflow-visible sm:h-44">
           {[25, 50, 75].map((y) => (
             <line key={y} x1="0" x2="100" y1={y} y2={y} stroke="rgba(242,238,230,.08)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
           ))}

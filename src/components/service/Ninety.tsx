@@ -28,18 +28,18 @@ export default function Ninety({ s }: { s: Service }) {
         <p className="label">{once ? "The project" : "Your first 90 days"}</p>
         <SplitHeading className="display mt-4 max-w-3xl text-section">{once ? "Four weeks from first call to launch." : "What happens in your first three months."}</SplitHeading>
 
-        <div data-steps className="relative mt-14">
+        <div data-steps className="relative mt-8 md:mt-14">
           <div className="absolute left-0 right-0 top-[22px] hidden h-[2px] bg-rule md:block">
             <div data-line className="h-full origin-left bg-ink" />
           </div>
-          <Reveal className="grid gap-8 md:grid-cols-3 md:gap-6" stagger={0.12}>
+          <Reveal className="grid gap-6 md:grid-cols-3 md:gap-6" stagger={0.12}>
             {x.ninety.map((n) => (
               <div key={n.m} data-reveal className="relative">
-                <span data-stop className="relative z-10 inline-flex h-11 items-center rounded-full bg-paper-2 px-5 text-[15px] font-semibold">
+                <span data-stop className="relative z-10 inline-flex h-9 items-center rounded-full md:h-11 bg-paper-2 px-5 text-[15px] font-semibold">
                   {n.m}
                 </span>
-                <h3 className="mt-6 text-[clamp(1.4rem,2.2vw,1.8rem)] font-semibold tracking-tight">{n.t}</h3>
-                <p className="mt-2 max-w-sm text-[17px] leading-relaxed text-ink-2">{n.d}</p>
+                <h3 className="mt-3 text-[clamp(1.4rem,2.2vw,1.8rem)] font-semibold tracking-tight">{n.t}</h3>
+                <p className="mt-1.5 max-w-sm text-[16px] md:mt-2 md:text-[17px] leading-relaxed text-ink-2">{n.d}</p>
               </div>
             ))}
           </Reveal>
@@ -47,7 +47,7 @@ export default function Ninety({ s }: { s: Service }) {
       </div>
 
       {/* channels */}
-      <div className="mt-[clamp(4rem,10vh,7rem)] border-y border-rule py-6">
+      <div className="mt-12 border-y border-rule py-5 md:mt-[clamp(4rem,10vh,7rem)] md:py-6">
         <p className="container-x mb-4 text-[15px] font-semibold text-muted">{once ? "Built in" : "Where we work for you"}</p>
         <div className="flex w-max animate-[marquee_40s_linear_infinite] gap-4 hover:[animation-play-state:paused]">
           {[...x.channels, ...x.channels, ...x.channels, ...x.channels].map((c, i) => (

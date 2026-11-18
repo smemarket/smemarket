@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AssessmentPage() {
   return (
-    <section className="min-h-[100svh] bg-paper pb-24 pt-32 md:pt-40">
+    <section className="min-h-[100svh] bg-paper pb-16 pt-24 md:pb-24 md:pt-40">
       <div className="container-x">
         <Assessment />
       </div>

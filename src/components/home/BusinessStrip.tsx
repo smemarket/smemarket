@@ -41,12 +41,12 @@ export default function BusinessStrip() {
 
   const row = [...ITEMS, ...ITEMS];
   return (
-    <section ref={root} className="overflow-hidden bg-paper section-y">
+    <section ref={root} className="overflow-hidden bg-paper section-y max-md:pt-4">
       <div className="container-x flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <h2 className="display max-w-xl text-[clamp(2rem,4vw,3.4rem)]">Built for businesses like yours.</h2>
         <p className="text-[17px] text-muted">Across all seven emirates.</p>
       </div>
-      <div className="mt-12">
+      <div className="mt-8 md:mt-12">
         <div ref={track} className="flex w-max gap-5 will-change-transform">
           {row.map((it, i) => (
             <figure key={i} className="group relative h-[clamp(260px,46vh,420px)] w-[clamp(220px,24vw,330px)] shrink-0 overflow-hidden rounded-2xl">

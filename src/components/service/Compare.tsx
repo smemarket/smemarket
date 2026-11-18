@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Check, Minus } from "lucide-react";
 import { aed, type Service } from "@/lib/site";
 import { SplitHeading } from "@/components/ui/Reveal";
+import Swipe from "@/components/ui/Swipe";
 
 /** Doing it yourself vs a typical agency vs us. Qualitative, no invented numbers. */
 export default function Compare({ s }: { s: Service }) {
@@ -19,7 +20,29 @@ export default function Compare({ s }: { s: Service }) {
         <p className="label">Why us</p>
         <SplitHeading className="display mt-4 max-w-3xl text-section">The work of a full team, without hiring one.</SplitHeading>
 
-        <div className="mt-12 overflow-hidden rounded-[28px] bg-card ring-1 ring-rule">
+        {/* phones: one card per option, ours first, instead of a five-row table */}
+        <div className="mt-8 md:hidden">
+          <Swipe desktop="">
+            {[2, 1, 0].map((c) => (
+              <div key={c} className={clsx("h-full rounded-[24px] p-6", c === 2 ? "bg-ink text-paper" : "bg-card ring-1 ring-rule")}>
+                <p className={clsx("text-[15px] font-semibold", c === 2 ? "text-lime" : "text-muted")}>{COLS[c]}</p>
+                <ul className="mt-4 space-y-3.5">
+                  {ROWS.map((r) => (
+                    <li key={r[0]} className="flex gap-2.5">
+                      {c === 2 ? <Check className="mt-1 size-4 shrink-0 text-lime" strokeWidth={3} /> : <Minus className="mt-1 size-4 shrink-0 text-muted" />}
+                      <span>
+                        <span className={clsx("block text-[13px]", c === 2 ? "text-paper/55" : "text-muted")}>{r[0]}</span>
+                        <span className={clsx("text-[16px] leading-snug", c === 2 ? "font-medium" : "text-ink-2")}>{r[c + 1]}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </Swipe>
+        </div>
+
+        <div className="mt-12 hidden overflow-hidden rounded-[28px] bg-card ring-1 ring-rule md:block">
           <div className="hidden grid-cols-[1fr_1fr_1fr_1.15fr] border-b border-rule md:grid">
             <span />
             {COLS.map((c, i) => (

@@ -79,6 +79,7 @@ export default function PageTransition() {
       });
       return () => {
         t.kill();
+        getLenis()?.start();
       };
     }
 
@@ -141,6 +142,8 @@ export default function PageTransition() {
     return () => {
       cancelAnimationFrame(hold);
       tl.kill();
+      // if the intro is cut short (hot reload, fast navigation), never leave scrolling switched off
+      getLenis()?.start();
     };
   }, [intro]);
 

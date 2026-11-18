@@ -12,6 +12,7 @@ export default function Swipe({
   bp = "md",
   itemWidth = "84%",
   outer,
+  dark,
 }: {
   children: React.ReactNode;
   /** classes applied from the breakpoint up, e.g. "md:grid md:grid-cols-3 md:gap-5" */
@@ -20,6 +21,8 @@ export default function Swipe({
   itemWidth?: string;
   /** classes for the outer wrapper, e.g. "lg:contents" to merge into a parent grid */
   outer?: string;
+  /** light progress dots, for dark sections */
+  dark?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -65,7 +68,7 @@ export default function Swipe({
       {count > 1 && (
         <div className={clsx("mt-3 flex justify-center gap-1.5", hideDots)}>
           {Array.from({ length: count }).map((_, i) => (
-            <button key={i} onClick={() => go(i)} aria-label={`Go to card ${i + 1}`} className={clsx("h-1.5 rounded-full transition-all duration-500 ease-out-expo", i === active ? "w-6 bg-ink" : "w-1.5 bg-ink/20")} />
+            <button key={i} onClick={() => go(i)} aria-label={`Go to card ${i + 1}`} className={clsx("h-1.5 rounded-full transition-all duration-500 ease-out-expo", i === active ? clsx("w-6", dark ? "bg-paper" : "bg-ink") : clsx("w-1.5", dark ? "bg-paper/25" : "bg-ink/20"))} />
           ))}
         </div>
       )}

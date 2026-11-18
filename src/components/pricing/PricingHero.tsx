@@ -44,17 +44,17 @@ export default function PricingHero() {
   };
 
   return (
-    <section ref={root} className="bg-paper pb-16 pt-28 md:pt-36 lg:pb-24">
+    <section ref={root} className="bg-paper pb-12 pt-24 md:pt-36 lg:pb-24">
       <div className="container-x grid items-center gap-12 lg:grid-cols-[1fr_minmax(0,500px)] lg:gap-20">
         <div>
           <p data-p-fade className="label">Pricing</p>
           <SplitHeading as="h1" immediate className="display mt-4 text-[clamp(2.6rem,min(5.6vw,10vh),5.2rem)]">
             Your whole growth team. One monthly price.
           </SplitHeading>
-          <p data-p-fade className="mt-6 max-w-xl text-[20px] leading-relaxed text-ink-2">
+          <p data-p-fade className="mt-5 max-w-xl text-[18px] leading-relaxed text-ink-2 md:mt-6 md:text-[20px]">
             Pick single services or take all five monthly services as one plan. No packages to decode, no hidden extras.
           </p>
-          <div data-p-fade className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div data-p-fade className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9">
             <Button href="/pricing#bundle" size="lg" arrow>
               Build your own plan
             </Button>

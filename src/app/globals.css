@@ -248,7 +248,12 @@ button:disabled {
     font-size: clamp(2.6rem, min(7vw, 12vh), 6.5rem);
   }
   .section-y {
-    padding-block: clamp(4rem, 11vh, 8rem);
+    padding-block: 4rem;
+  }
+  @media (min-width: 768px) {
+    .section-y {
+      padding-block: clamp(4rem, 11vh, 8rem);
+    }
   }
 }
 
@@ -410,5 +415,27 @@ body.is-transitioning {
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+/* page scrollbar: rounded ink thumb on the paper background */
+html::-webkit-scrollbar {
+  width: 12px;
+}
+html::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+html::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  border: 3px solid var(--color-paper);
+  border-radius: 999px;
+}
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-3);
+}
+/* Firefox only takes colours (Chrome would drop the rounded style above if this applied to it) */
+@-moz-document url-prefix() {
+  html {
+    scrollbar-color: var(--color-ink) var(--color-paper);
   }
 }

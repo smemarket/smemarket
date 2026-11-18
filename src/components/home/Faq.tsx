@@ -48,18 +48,18 @@ export default function Faq({ items, title = "Ask us anything.", greeting = "Hi!
   return (
     <section className={clsx(tone, "section-y")}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <div className="container-x grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
-        <div>
+      <div className="container-x grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
+        <div className="min-w-0">
           <SectionHead eyebrow="FAQ" title={title} />
-          <p className="mt-5 text-[19px] text-ink-2">Tap a question. Our team answers this way on WhatsApp too.</p>
-          <div className="mt-8 flex flex-wrap gap-2.5">
+          <p className="mt-4 text-[17px] text-ink-2 md:mt-5 md:text-[19px]">Tap a question. Our team answers this way on WhatsApp too.</p>
+          <div className="-mx-5 mt-7 flex gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:mt-8 md:flex-wrap md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
             {items.map((f, k) => (
               <button
                 key={f.q}
                 onClick={() => ask(k)}
                 disabled={typing}
                 className={clsx(
-                  "rounded-full border px-4 py-2.5 text-left text-[15px] font-medium transition-all duration-300 disabled:cursor-wait",
+                  "shrink-0 whitespace-nowrap rounded-full border px-4 py-2.5 text-left text-[15px] font-medium md:shrink md:whitespace-normal transition-all duration-300 disabled:cursor-wait",
                   asked.includes(k) ? "border-ink/15 bg-paper text-muted" : "border-ink bg-card hover:-translate-y-0.5 hover:bg-ink hover:text-paper",
                 )}
               >
@@ -80,7 +80,7 @@ export default function Faq({ items, title = "Ask us anything.", greeting = "Hi!
             <WhatsAppIcon className="size-5 text-paper/60" />
           </div>
           {/* no inner scroller: the thread stacks from the bottom and older messages fade off the top, so the page always scrolls */}
-          <div className="flex h-[420px] flex-col justify-end gap-3 overflow-hidden px-4 py-5 [mask-image:linear-gradient(to_bottom,transparent,#000_18%)] md:h-[460px] md:px-6">
+          <div className="flex h-[380px] flex-col justify-end gap-3 overflow-hidden px-4 py-5 [mask-image:linear-gradient(to_bottom,transparent,#000_18%)] md:h-[460px] md:px-6">
             {msgs.slice(-6).map((m) => (
               <div key={m.id} className={clsx("flex animate-[fadeIn_.35s_ease]", m.from === "you" ? "justify-end" : "justify-start")}>
                 <div className={clsx("max-w-[85%] rounded-2xl px-4 py-3 text-[16px] leading-relaxed shadow-sm", m.from === "you" ? "rounded-br-md bg-lime text-ink" : "rounded-bl-md bg-card text-ink")}>

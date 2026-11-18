@@ -7,6 +7,7 @@ import { usePlan } from "@/components/plan/Plan";
 import { Avatar } from "@/components/ui/Character";
 import { Reveal, SplitHeading } from "@/components/ui/Reveal";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
+import Swipe from "@/components/ui/Swipe";
 
 const PLANS = [
   { k: "Just getting started", who: "You're busy, enquiries slip through, and your profiles look quiet.", slugs: ["enquiry-desk", "social-media-management"], tone: "bg-[#d5ece4]" },
@@ -22,14 +23,15 @@ export default function Scenarios() {
       <div className="container-x">
         <p className="label">Not sure where to start?</p>
         <SplitHeading className="display mt-4 max-w-3xl text-section">Which plan fits you?</SplitHeading>
-        <Reveal className="mt-12 grid gap-4 lg:grid-cols-3" stagger={0.1}>
+        <Reveal className="mt-8 md:mt-12" stagger={0.1}>
+          <Swipe bp="lg" desktop="lg:grid lg:grid-cols-3 lg:gap-4">
           {PLANS.map((p) => {
             const list = p.slugs.map((x) => getService(x)!);
             const price = p.bundle ? BUNDLE_PRICE : list.reduce((a, s) => a + s.price, 0);
             const inPlan = p.slugs.every((x) => items.includes(x));
             const dark = p.bundle;
             return (
-              <div key={p.k} data-reveal className={clsx("flex flex-col rounded-[28px] p-7 md:p-8", p.tone, !dark && "text-ink")}>
+              <div key={p.k} data-reveal className={clsx("flex h-full flex-col rounded-[28px] p-6 md:p-8", p.tone, !dark && "text-ink")}>
                 <div className="flex -space-x-2.5">
                   {list.map((s) => {
                     const sp = SPECIALIST[s.slug];
@@ -40,9 +42,9 @@ export default function Scenarios() {
                     );
                   })}
                 </div>
-                <h3 className="mt-6 text-[26px] font-semibold tracking-tight">{p.k}</h3>
+                <h3 className="mt-5 text-[24px] md:mt-6 md:text-[26px] font-semibold tracking-tight">{p.k}</h3>
                 <p className={clsx("mt-2 text-[16px] leading-relaxed", dark ? "text-paper/65" : "text-ink-2")}>{p.who}</p>
-                <ul className="mt-6 space-y-2">
+                <ul className="mb-6 mt-5 space-y-2 md:mt-6">
                   {list.map((s) => (
                     <li key={s.slug} className="flex items-center gap-2.5 text-[16px] font-medium">
                       <Check className={clsx("size-4 shrink-0", dark && "text-lime")} strokeWidth={3} />
@@ -51,7 +53,7 @@ export default function Scenarios() {
                   ))}
                 </ul>
                 <div className={clsx("mt-auto border-t pt-6", dark ? "border-rule-dark" : "border-ink/10")}>
-                  <p className="mt-6 text-[clamp(1.8rem,3vw,2.4rem)] font-semibold tracking-tight tabular-nums">
+                  <p className="text-[clamp(1.8rem,3vw,2.4rem)] font-semibold tracking-tight tabular-nums">
                     {aed(price)}
                     <span className={clsx("text-[16px] font-normal", dark ? "text-paper/55" : "text-ink/55")}> / month</span>
                   </p>
@@ -70,6 +72,7 @@ export default function Scenarios() {
               </div>
             );
           })}
+          </Swipe>
         </Reveal>
       </div>
     </section>

@@ -64,12 +64,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
       {/* the photo opens up as it arrives */}
       <div className="container-x pb-6">
-        <ScrollOpen className="relative h-[clamp(320px,62vh,620px)]">
+        <ScrollOpen className="relative h-[340px] md:h-[clamp(320px,62vh,620px)]">
           <Image quality={90} src={s.image} alt={s.name} fill sizes="(min-width:1280px) 1240px, 100vw" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 grid gap-4 p-6 text-paper md:grid-cols-3 md:gap-8 md:p-10">
+          <div className="absolute inset-x-0 bottom-0 grid gap-2.5 p-5 text-paper md:grid-cols-3 md:gap-4 md:p-6 md:gap-8 md:p-10">
             {s.bullets.map((b, i) => (
-              <p key={b} className="border-t border-paper/30 pt-4 text-[15px] leading-snug md:text-[17px]">
+              <p key={b} className="border-t border-paper/30 pt-2.5 text-[14px] md:pt-4 md:text-[15px] leading-snug md:text-[17px]">
                 <span className="mr-2 font-semibold text-lime">0{i + 1}</span>
                 {b}
               </p>
@@ -78,7 +78,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </ScrollOpen>
       </div>
 
-      <div className="pt-[clamp(3rem,8vh,6rem)]">
+      <div className="pt-8 md:pt-[clamp(3rem,8vh,6rem)]">
         <Problems s={s} />
       </div>
       <WhoFor s={s} />

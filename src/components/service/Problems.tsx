@@ -5,6 +5,7 @@ import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { Reveal, SplitHeading } from "@/components/ui/Reveal";
 import Character, { type Cast } from "@/components/ui/Character";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
+import Swipe from "@/components/ui/Swipe";
 
 const OWNER: Cast[] = ["karim", "maya", "ben"];
 
@@ -25,25 +26,27 @@ export default function Problems({ s }: { s: Service }) {
 
   return (
     <section ref={root} className="bg-ink section-y text-paper">
-      <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div className="container-x grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <p className="text-[15px] font-medium text-lime">Sound familiar?</p>
           <SplitHeading className="display mt-4 text-section">The problems we fix first.</SplitHeading>
-          <p className="mt-5 max-w-sm text-[18px] text-paper/65">If any of these sound like your week, you&apos;re in the right place.</p>
+          <p className="mt-4 max-w-sm text-[17px] text-paper/65 md:mt-5 md:text-[18px]">If any of these sound like your week, you&apos;re in the right place.</p>
           <div className={`mt-10 hidden w-fit overflow-hidden rounded-[28px] text-ink lg:block ${VISUAL_TONE[s.slug]}`}>
             <Character who={OWNER[Number(s.num) % OWNER.length]} mood="stressed" body="Device" size={240} className="translate-y-3" />
           </div>
         </div>
-        <Reveal className="divide-y divide-rule-dark border-y border-rule-dark" stagger={0.12}>
+        <Reveal stagger={0.12}>
+          <Swipe dark desktop="md:block md:divide-y md:divide-rule-dark md:border-y md:border-rule-dark">
           {s.pain.map((p, i) => (
-            <div key={p.title} data-reveal className="group grid gap-3 py-8 sm:grid-cols-[72px_1fr] md:py-10">
+            <div key={p.title} data-reveal className="group grid h-full content-start gap-3 rounded-2xl bg-ink-2 p-6 md:grid-cols-[72px_1fr] md:rounded-none md:bg-transparent md:px-0 md:py-10">
               <span className="text-[15px] font-semibold text-paper/40 transition-colors duration-500 group-hover:text-lime">0{i + 1}</span>
               <div>
                 <h3 className="text-[clamp(1.4rem,2.4vw,2rem)] font-semibold leading-tight tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-x-1">{p.title}</h3>
-                <p className="mt-3 max-w-xl text-[17px] leading-relaxed text-paper/65">{p.body}</p>
+                <p className="mt-3 max-w-xl text-[16px] leading-relaxed text-paper/65 md:text-[17px]">{p.body}</p>
               </div>
             </div>
           ))}
+          </Swipe>
         </Reveal>
       </div>
     </section>

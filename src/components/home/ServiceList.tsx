@@ -82,7 +82,7 @@ export default function ServiceList() {
                 className={clsx(
                   "group relative overflow-hidden rounded-2xl text-ink transition-[flex-grow,height] duration-700 ease-out-expo lg:basis-0",
                   VISUAL_TONE[s.slug],
-                  on ? "h-[560px] lg:h-auto lg:grow-[5]" : "h-[96px] lg:h-auto lg:grow",
+                  on ? "h-[490px] lg:h-auto lg:grow-[5]" : "h-[96px] lg:h-auto lg:grow",
                 )}
               >
                 {/* closed: number, name, and the specialist rising from the bottom */}
@@ -92,7 +92,7 @@ export default function ServiceList() {
                     <span className="block text-[19px] font-semibold leading-tight">{s.short}</span>
                   </div>
                   <div className="absolute bottom-0 right-3 lg:inset-x-0 lg:right-auto lg:flex lg:justify-center">
-                    <Character who={sp.who} mood={sp.mood} body={sp.body} size={150} className="h-[96px] w-[96px] origin-bottom translate-y-2 transition-transform duration-500 group-hover:scale-[1.06] lg:h-[170px] lg:w-[170px]" />
+                    <Character who={sp.who} mood={sp.mood} body={sp.body} size={150} className="!h-[88px] !w-[88px] origin-bottom translate-y-1 transition-transform duration-500 group-hover:scale-[1.06] lg:!h-[170px] lg:!w-[170px]" />
                   </div>
                 </div>
 

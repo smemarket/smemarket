@@ -29,7 +29,7 @@ const NEXT = [
 export default function ContactPage() {
   return (
     <>
-      <section className="bg-paper pb-16 pt-28 md:pt-36">
+      <section className="bg-paper pb-12 pt-24 md:pb-16 md:pt-36">
         <div className="container-x">
           <div className="grid items-end gap-8 lg:grid-cols-[1.4fr_1fr]">
             <div>
@@ -37,7 +37,7 @@ export default function ContactPage() {
               <SplitHeading as="h1" immediate className="display mt-4 text-[clamp(2.8rem,min(6.6vw,11vh),6.2rem)]">
                 Talk to our team.
               </SplitHeading>
-              <p className="mt-5 max-w-xl animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_.3s_both] text-[20px] leading-relaxed text-ink-2">
+              <p className="mt-4 max-w-xl animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_.3s_both] text-[18px] md:mt-5 md:text-[20px] leading-relaxed text-ink-2">
                 Tell us about your business and what you need. We reply within one business day.
               </p>
             </div>
@@ -57,17 +57,17 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-8">
-            <Reveal className="grid content-start gap-4" stagger={0.08}>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:mt-14 md:gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-8">
+            <Reveal className="grid content-start gap-3 md:gap-4" stagger={0.08}>
               <a
                 data-reveal
                 href={waLink("Hi SME Market, I'd like to talk about growing my business.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[28px] bg-ink p-7 text-paper md:p-8"
+                className="group relative flex min-h-[150px] flex-col justify-between gap-6 overflow-hidden rounded-[24px] bg-ink p-6 text-paper md:min-h-[220px] md:rounded-[28px] md:p-8"
               >
                 <span className="flex items-start justify-between">
-                  <span className="grid size-14 place-items-center rounded-2xl bg-[#25D366] text-white transition-transform duration-500 ease-out-expo group-hover:-rotate-6 group-hover:scale-105">
+                  <span className="grid size-12 place-items-center rounded-2xl bg-[#25D366] md:size-14 text-white transition-transform duration-500 ease-out-expo group-hover:-rotate-6 group-hover:scale-105">
                     <WhatsAppIcon className="size-7" />
                   </span>
                   <ArrowUpRight className="size-6 text-paper/60 transition-transform duration-300 group-hover:rotate-45 group-hover:text-paper" />
@@ -78,8 +78,8 @@ export default function ContactPage() {
                 </span>
               </a>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <a data-reveal href={SITE.phoneHref} className="group flex flex-col justify-between gap-8 rounded-[28px] bg-[#f6e3b5] p-6 text-ink">
+              <div className="grid gap-3 sm:grid-cols-2 md:gap-4">
+                <a data-reveal href={SITE.phoneHref} className="group flex flex-col justify-between gap-5 rounded-[24px] bg-[#f6e3b5] p-5 text-ink md:gap-8 md:rounded-[28px] md:p-6">
                   <span className="flex items-start justify-between">
                     <Phone className="size-6" />
                     <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:rotate-45" />
@@ -89,7 +89,7 @@ export default function ContactPage() {
                     <span className="block text-[18px] font-semibold">{SITE.phone}</span>
                   </span>
                 </a>
-                <a data-reveal href={mailLink()} className="group flex min-w-0 flex-col justify-between gap-8 rounded-[28px] bg-[#dbe6ef] p-6 text-ink">
+                <a data-reveal href={mailLink()} className="group flex min-w-0 flex-col justify-between gap-5 rounded-[24px] bg-[#dbe6ef] p-5 text-ink md:gap-8 md:rounded-[28px] md:p-6">
                   <span className="flex items-start justify-between">
                     <Mail className="size-6" />
                     <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:rotate-45" />
@@ -101,7 +101,7 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              <div data-reveal className="group relative min-h-[220px] overflow-hidden rounded-[28px]">
+              <div data-reveal className="group relative hidden min-h-[220px] overflow-hidden rounded-[28px] sm:block">
                 <Image quality={90} src="/images/dubai-day.jpg" alt="Dubai" fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
                 <p className="absolute inset-x-0 bottom-0 flex items-start gap-3 p-6 text-[15px] leading-relaxed text-paper">
@@ -156,12 +156,14 @@ export default function ContactPage() {
         <div className="container-x">
           <p className="label">After you send it</p>
           <SplitHeading className="display mt-4 text-section">What happens next.</SplitHeading>
-          <Reveal className="relative mt-12 grid gap-4 md:grid-cols-3" stagger={0.12}>
+          <Reveal className="relative mt-8 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4" stagger={0.12}>
             {NEXT.map((n, i) => (
-              <div key={n.t} data-reveal className="relative rounded-[28px] bg-card p-7 md:p-8">
-                <span className="grid size-11 place-items-center rounded-full bg-ink text-[16px] font-semibold text-lime">{i + 1}</span>
-                <h3 className="mt-8 text-[22px] font-semibold">{n.t}</h3>
-                <p className="mt-2 text-[16px] leading-relaxed text-ink-2">{n.d}</p>
+              <div key={n.t} data-reveal className="relative flex gap-4 rounded-[24px] bg-card p-6 md:block md:rounded-[28px] md:p-8">
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink text-[16px] font-semibold text-lime md:size-11">{i + 1}</span>
+                <div>
+                  <h3 className="mt-1.5 text-[20px] font-semibold md:mt-8 md:text-[22px]">{n.t}</h3>
+                  <p className="mt-1.5 text-[16px] leading-relaxed text-ink-2 md:mt-2">{n.d}</p>
+                </div>
               </div>
             ))}
           </Reveal>

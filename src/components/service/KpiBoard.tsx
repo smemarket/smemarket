@@ -26,11 +26,11 @@ export default function KpiBoard({ s }: { s: Service }) {
 
   return (
     <section className="bg-paper section-y">
-      <div className="container-x grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+      <div className="container-x grid items-center gap-8 md:gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div>
           <p className="label">How you&apos;ll know it&apos;s working</p>
           <SplitHeading className="display mt-4 text-section">One number we answer for, every month.</SplitHeading>
-          <p className="mt-5 max-w-lg text-[18px] text-ink-2">
+          <p className="mt-4 max-w-lg text-[17px] text-ink-2 md:mt-5 md:text-[18px]">
             For {midSentence(s.name)}, that&apos;s <span className="font-semibold text-ink">{midSentence(s.kpi)}</span>. It sits at the top of your dashboard, updated in real time, next to everything else we track.
           </p>
           <div className="mt-8">
@@ -47,7 +47,7 @@ export default function KpiBoard({ s }: { s: Service }) {
           </div>
           <div className="p-6">
             <p className="text-[14px] text-paper/55">{s.dashboard[pick]}</p>
-            <svg key={pick} viewBox="0 0 100 100" preserveAspectRatio="none" className={clsx("mt-4 h-40 w-full overflow-visible md:h-48", on ? "animate-[wipeIn_1.4s_cubic-bezier(.65,0,.35,1)_both]" : "[clip-path:inset(0_100%_0_0)]")}>
+            <svg key={pick} viewBox="0 0 100 100" preserveAspectRatio="none" className={clsx("mt-3 h-28 w-full overflow-visible md:mt-4 md:h-48", on ? "animate-[wipeIn_1.4s_cubic-bezier(.65,0,.35,1)_both]" : "[clip-path:inset(0_100%_0_0)]")}>
               {[25, 50, 75].map((y) => (
                 <line key={y} x1="0" x2="100" y1={y} y2={y} stroke="rgba(242,238,230,.08)" vectorEffect="non-scaling-stroke" />
               ))}

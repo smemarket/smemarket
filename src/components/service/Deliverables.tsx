@@ -4,6 +4,7 @@ import clsx from "clsx";
 import type { Service } from "@/lib/site";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { SplitHeading } from "@/components/ui/Reveal";
+import Swipe from "@/components/ui/Swipe";
 
 const TONES = ["bg-[#e9f1c9]", "bg-[#f6dcd2]", "bg-[#dbe6ef]", "bg-[#f6e3b5]", "bg-[#d5ece4]", "bg-[#e3dcf2]"];
 
@@ -14,7 +15,7 @@ export default function Deliverables({ s }: { s: Service }) {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
+      if (prefersReducedMotion() || window.matchMedia("(max-width: 767px)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-stack]");
       cards.forEach((card, i) => {
         const next = cards[i + 1];
@@ -32,11 +33,11 @@ export default function Deliverables({ s }: { s: Service }) {
 
   return (
     <section ref={root} className="bg-paper section-y">
-      <div className="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div className="container-x grid grid-cols-1 gap-8 md:gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <p className="label">What you get</p>
           <SplitHeading className="display mt-4 text-section">{monthly ? "Done for you, every month." : "Done for you, start to finish."}</SplitHeading>
-          <p className="mt-5 max-w-md text-[18px] text-ink-2">Our agents do the heavy lifting. Our team checks every piece before it reaches your customers.</p>
+          <p className="mt-4 max-w-md text-[17px] text-ink-2 md:mt-5 md:text-[18px]">Our agents do the heavy lifting. Our team checks every piece before it reaches your customers.</p>
           <ul className="mt-8 hidden space-y-2 lg:block">
             {s.bullets.map((b) => (
               <li key={b} className="flex gap-3 text-[16px] text-ink-2">
@@ -47,22 +48,22 @@ export default function Deliverables({ s }: { s: Service }) {
           </ul>
         </div>
 
-        <div className="space-y-6">
+        <Swipe desktop="md:block md:space-y-6">
           {s.deliverables.map((d, i) => (
-            <div key={d.title} data-stack className="sticky" style={{ top: `calc(110px + ${i * 18}px)` }}>
-              <article className={clsx("relative flex min-h-[260px] origin-top flex-col justify-between overflow-hidden rounded-[28px] p-7 shadow-[0_-12px_40px_-24px_rgba(21,19,15,.35)] md:min-h-[300px] md:p-10", TONES[i % TONES.length])}>
+            <div key={d.title} data-stack className="h-full md:sticky md:![top:var(--t)]" style={{ ["--t" as string]: `calc(110px + ${i * 18}px)` }}>
+              <article className={clsx("relative flex h-full min-h-[230px] origin-top flex-col justify-between overflow-hidden rounded-[28px] p-7 shadow-[0_-12px_40px_-24px_rgba(21,19,15,.35)] md:min-h-[300px] md:p-10", TONES[i % TONES.length])}>
                 <span className="pointer-events-none absolute -right-2 -top-6 select-none text-[clamp(7rem,14vw,11rem)] font-semibold leading-none tracking-tighter text-ink/[0.07]">0{i + 1}</span>
                 <p className="relative text-[14px] font-semibold uppercase tracking-wide text-ink/55">
                   {String(i + 1).padStart(2, "0")} / {String(s.deliverables.length).padStart(2, "0")}
                 </p>
-                <div className="relative mt-10">
+                <div className="relative mt-8 md:mt-10">
                   <h3 className="text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-tight tracking-tight">{d.title}</h3>
-                  <p className="mt-3 max-w-lg text-[18px] leading-relaxed text-ink-2">{d.body}</p>
+                  <p className="mt-3 max-w-lg text-[16px] leading-relaxed text-ink-2 md:text-[18px]">{d.body}</p>
                 </div>
               </article>
             </div>
           ))}
-        </div>
+        </Swipe>
       </div>
     </section>
   );

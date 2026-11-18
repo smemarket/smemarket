@@ -13,7 +13,7 @@ const POINTS = [
 export default function Billing() {
   return (
     <section className="relative overflow-hidden bg-ink section-y text-paper">
-      <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div className="container-x grid gap-8 md:gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="relative">
           <p className="text-[15px] font-medium text-lime">How billing works</p>
           <SplitHeading className="display mt-4 text-section">No small print. Just how it works.</SplitHeading>
@@ -23,12 +23,14 @@ export default function Billing() {
         </div>
         <Reveal className="grid gap-px overflow-hidden rounded-[28px] bg-rule-dark sm:grid-cols-2" stagger={0.1}>
           {POINTS.map(({ icon: I, t, d }) => (
-            <div key={t} data-reveal className="group bg-ink p-7 transition-colors duration-500 hover:bg-ink-2 md:p-9">
-              <span className="grid size-12 place-items-center rounded-2xl bg-paper/10 text-lime transition-transform duration-500 ease-out-expo group-hover:-rotate-6">
+            <div key={t} data-reveal className="group flex gap-4 bg-ink p-5 transition-colors duration-500 hover:bg-ink-2 sm:block md:p-9">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-paper/10 sm:size-12 sm:rounded-2xl text-lime transition-transform duration-500 ease-out-expo group-hover:-rotate-6">
                 <I className="size-5" />
               </span>
-              <h3 className="mt-8 text-[22px] font-semibold leading-snug">{t}</h3>
-              <p className="mt-2 text-[16px] leading-relaxed text-paper/65">{d}</p>
+              <div>
+                <h3 className="text-[18px] font-semibold leading-snug sm:mt-8 sm:text-[22px]">{t}</h3>
+                <p className="mt-1 text-[15px] leading-relaxed text-paper/65 sm:mt-2 sm:text-[16px]">{d}</p>
+              </div>
             </div>
           ))}
         </Reveal>

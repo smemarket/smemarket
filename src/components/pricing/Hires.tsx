@@ -37,13 +37,12 @@ export default function Hires() {
             {MONTHLY.map((s) => {
               const sp = SPECIALIST[s.slug];
               return (
-                <div key={s.slug} data-reveal className="group flex items-center gap-4 border-b border-rule px-6 py-4">
+                <div key={s.slug} data-reveal className="group flex items-center gap-4 border-b border-rule px-5 py-4 sm:px-6">
                   <Avatar who={sp.who} mood={sp.mood} body={sp.body} size={44} tone={VISUAL_TONE[s.slug]} />
-                  <span className="relative text-[17px] text-muted">
-                    {ROLE[s.slug]}
-                    <span className="absolute inset-x-0 top-1/2 h-[2px] origin-left scale-x-100 bg-stamp/70 transition-transform duration-700 ease-out-expo" />
+                  <span className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                    <span className="text-[16px] text-muted line-through decoration-stamp/70 decoration-2 sm:text-[17px]">{ROLE[s.slug]}</span>
+                    <span className="text-[14px] font-semibold text-ink sm:shrink-0">{s.name}</span>
                   </span>
-                  <span className="ml-auto shrink-0 text-[14px] font-semibold text-ink">{s.name}</span>
                 </div>
               );
             })}

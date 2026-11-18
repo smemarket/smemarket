@@ -108,7 +108,9 @@ export default function Hero() {
 
       // Not scrubbed: the first small scroll plays the whole change, scrolling back to the top reverses it.
       const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut" } });
-      tl.to("[data-frame]", { clipPath: "inset(9% 5% 9% 5% round 28px)", duration: 1.1 }, 0)
+      const phone = window.matchMedia("(max-width: 767px)").matches;
+      // phones: the framed photo ends close to the next section, so there is no empty band under it
+      tl.to("[data-frame]", { clipPath: phone ? "inset(11% 4% 2% 4% round 24px)" : "inset(9% 5% 9% 5% round 28px)", duration: 1.1 }, 0)
         .to("[data-photo]", { scale: 1, duration: 1.1 }, 0)
         .to("[data-content]", { y: -80, opacity: 0, duration: 0.5, ease: "power2.in" }, 0)
         .to("[data-chips]", { y: -140, opacity: 0, duration: 0.55, ease: "power2.in" }, 0)
@@ -140,7 +142,7 @@ export default function Hero() {
   };
 
   return (
-    <section ref={root} onPointerMove={onMove} className="relative h-[112svh] bg-paper">
+    <section ref={root} onPointerMove={onMove} className="relative h-[104svh] bg-paper md:h-[112svh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div data-frame className="absolute inset-0 overflow-hidden bg-ink" style={{ clipPath: "inset(0% 0% 0% 0% round 0px)" }}>
           <div data-photo-wrap className="absolute -inset-6">

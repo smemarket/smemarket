@@ -91,7 +91,7 @@ export default function Footer() {
               <Link key={s.slug} href={`/services/${s.slug}`} aria-label={`${s.name}: meet your ${sp.role.toLowerCase()}`} className={`group relative h-[clamp(84px,13vw,170px)] overflow-hidden rounded-t-2xl text-ink sm:rounded-t-[24px] ${VISUAL_TONE[s.slug]}`}>
                 <span className="absolute left-3 top-2.5 hidden text-[13px] font-semibold text-ink/55 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">{sp.role}</span>
                 <span className="absolute inset-x-0 bottom-0 flex justify-center">
-                  <Character who={sp.who} mood={sp.mood} body={sp.body} size={200} style={{ width: "92%", height: "auto", aspectRatio: "1" }} className="translate-y-[38%] transition-transform duration-700 ease-out-expo group-hover:translate-y-[18%]" />
+                  <Character who={sp.who} mood={sp.mood} body={sp.body} size={200} style={{ width: undefined, height: "auto", aspectRatio: "1" }} className="w-[115%] max-w-none shrink-0 translate-y-[24%] sm:w-[92%] sm:translate-y-[38%] transition-transform duration-700 ease-out-expo group-hover:translate-y-[18%]" />
                 </span>
               </Link>
             );

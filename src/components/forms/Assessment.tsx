@@ -10,6 +10,7 @@ import { WhatsAppPending } from "@/components/forms/EnquiryForm";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import Character from "@/components/ui/Character";
+import Swipe from "@/components/ui/Swipe";
 import { VISUAL_TONE } from "@/components/plan/ServiceVisual";
 import { usePlan } from "@/components/plan/Plan";
 import { getLenis } from "@/components/layout/SmoothScroll";
@@ -219,20 +220,20 @@ function Intro({ onStart }: { onStart: () => void }) {
   return (
     <>
 
-    <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+    <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
       <div className="animate-[pageIn_.8s_cubic-bezier(.16,1,.3,1)_both]">
         <p className="label">Free growth score</p>
         <h1 className="display mt-4 text-[clamp(2.6rem,min(5.8vw,10vh),5.4rem)]">Find your growth leaks in 2 minutes.</h1>
-        <p className="mt-6 max-w-xl text-[20px] leading-relaxed text-ink-2">
+        <p className="mt-5 max-w-xl text-[18px] leading-relaxed text-ink-2 md:mt-6 md:text-[20px]">
           Ten quick questions. You&apos;ll get a score across search, ads, outreach, social, enquiries and your website, and exactly what to fix first.
         </p>
-        <button onClick={onStart} className="group mt-9 flex h-16 items-center gap-3 rounded-full bg-lime pl-8 pr-2 text-[18px] font-semibold text-ink transition hover:brightness-95 active:scale-[0.98]">
+        <button onClick={onStart} className="group mt-7 flex h-16 items-center md:mt-9 gap-3 rounded-full bg-lime pl-8 pr-2 text-[18px] font-semibold text-ink transition hover:brightness-95 active:scale-[0.98]">
           Start my growth score
           <span className="grid size-12 place-items-center rounded-full bg-ink text-lime transition-transform duration-300 group-hover:rotate-45">
             <ArrowUpRight className="size-5" />
           </span>
         </button>
-        <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-[16px] text-ink-2">
+        <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-[15px] md:mt-10 md:gap-x-7 md:gap-y-3 md:text-[16px] text-ink-2">
           <li className="flex items-center gap-2">
             <Clock className="size-5" /> 2 minutes
           </li>
@@ -245,14 +246,14 @@ function Intro({ onStart }: { onStart: () => void }) {
         </ul>
       </div>
 
-      <div className="relative h-[min(560px,64vh)] min-h-[400px] animate-[pageIn_1s_cubic-bezier(.16,1,.3,1)_.15s_both] overflow-hidden rounded-[32px] bg-[#e9f1c9] text-ink">
+      <div className="relative h-[300px] animate-[pageIn_1s_cubic-bezier(.16,1,.3,1)_.15s_both] overflow-hidden rounded-[32px] bg-[#e9f1c9] sm:h-[min(560px,64vh)] sm:min-h-[400px] text-ink">
         {chips.map((c) => (
           <span key={c.a} className={clsx("absolute z-10 animate-[fadeIn_.6s_ease_both] rounded-full px-4 py-2 text-[14px] font-semibold shadow-[0_14px_30px_-18px_rgba(21,19,15,.5)]", c.pos, toneOf(c.a) === "bg-[#e9f1c9]" ? "bg-card" : toneOf(c.a))} style={{ animationDelay: `calc(.5s + ${c.d} / 4)` }}>
             {c.a}
           </span>
         ))}
         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-          <Character who="zara" mood="excited" body="Device" size={360} className="h-[300px] w-[300px] sm:h-[360px] sm:w-[360px]" />
+          <Character who="zara" mood="excited" body="Device" size={360} className="!h-[250px] !w-[250px] sm:!h-[360px] sm:!w-[360px]" />
         </div>
       </div>
     </div>
@@ -277,12 +278,13 @@ const ASK = [
 /** Below the intro: what you get, and the questions people ask before starting. */
 function IntroMore({ onStart }: { onStart: () => void }) {
   return (
-    <div className="mt-[clamp(5rem,12vh,8rem)]">
+    <div className="mt-16 md:mt-[clamp(5rem,12vh,8rem)]">
       <p className="label">What you&apos;ll get</p>
       <h2 className="display mt-4 max-w-3xl text-section">Three things, in about two minutes.</h2>
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 md:mt-10">
+      <Swipe desktop="md:grid md:grid-cols-3 md:gap-4">
         {GET.map((g, i) => (
-          <div key={g.t} className={clsx("flex min-h-[260px] flex-col justify-between rounded-[28px] p-7 md:p-8", g.tone, i > 0 && "text-ink")}>
+          <div key={g.t} className={clsx("flex h-full min-h-[230px] flex-col justify-between rounded-[28px] p-6 md:min-h-[260px] md:p-8", g.tone, i > 0 && "text-ink")}>
             {i === 0 ? (
               <svg viewBox="0 0 120 120" className="size-24 -rotate-90">
                 <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(242,238,230,.12)" strokeWidth="10" />
@@ -306,15 +308,16 @@ function IntroMore({ onStart }: { onStart: () => void }) {
                 ))}
               </div>
             )}
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <h3 className="text-[22px] font-semibold">{g.t}</h3>
               <p className={clsx("mt-2 text-[16px] leading-relaxed", i === 0 ? "text-paper/65" : "text-ink-2")}>{g.d}</p>
             </div>
           </div>
         ))}
+      </Swipe>
       </div>
 
-      <div className="mt-[clamp(5rem,12vh,8rem)] grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div className="mt-16 grid gap-8 md:mt-[clamp(5rem,12vh,8rem)] md:gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div>
           <p className="label">Before you start</p>
           <h2 className="display mt-4 text-section">Fair questions.</h2>
